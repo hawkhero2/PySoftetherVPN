@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import os
-import subprocess
+# import subprocess
 import tkinter
 import customtkinter
 import json
@@ -34,6 +34,7 @@ def button_disconnect_vpn():
     cfg_file = open("softether-vpn-client/vpn_config")
     for itm in cfg_file:
         print(itm.split("=\\n"))
+    
     # os.system("vpnclient stop >/dev/null 2>&1")
     print("terminating connection...")
 
@@ -59,7 +60,7 @@ creds_btn = customtkinter.CTkButton(vpn_status,
 connect_btn = customtkinter.CTkButton(vpn_status, 
                                       text = "Connect",
                                       command = button_connect_vpn)
-connect_btn.place(relx = 0.35, rely = 0.8 )
+connect_btn.place(relx = 0.35, rely = 0.8)
 creds_btn.place(relx = 0.05, rely = 0.8)
 
  # ------------------------------------------------------------------
@@ -68,6 +69,10 @@ creds = customtkinter.CTk()
 creds.geometry("500x250")
 creds.title("VPN")
 creds.withdraw()
+
+def create_nic():
+    os.system("vpncmd /")
+    pass
 
 def save_creds():
     # print("You connected " + acc_input.get())
@@ -89,11 +94,15 @@ pwd_input = customtkinter.CTkEntry(creds,
 pwd_input.place(in_= creds, relx = 0.25, rely = 0.4)
 
 
-button = customtkinter.CTkButton(master = creds, 
+save_btn = customtkinter.CTkButton(master = creds, 
                                  text = "Save", 
                                  command = save_creds)
 
-button.place(relx=0.25, rely=0.6)
+create_nic_btn = customtkinter.CTkButton(master = creds, 
+                                         text = "Create",
+                                         command = create_nic)
+
+save_btn.place(relx=0.25, rely=0.6)
 
 creds.resizable(False,False)
 vpn_status.mainloop()
