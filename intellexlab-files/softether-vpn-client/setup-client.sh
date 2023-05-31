@@ -20,9 +20,9 @@ vpncmd /CLIENT localhost /CMD NicCreate $NIC_NAME
 sleep 2
 
 # Configure the VPN account info and configs
-$CLIENT_DIR/vpncmd /CLIENT localhost /CMD AccountCreate $ACCOUNT_NAME
+vpncmd /CLIENT localhost /CMD AccountCreate $ACCOUNT_NAME
 
 sleep 2
 
 # Configure the VPN server password
-$CLIENT_DIR/vpncmd /CLIENT localhost /CMD AccountPassword $ACCOUNT_NAME
+vpncmd /CLIENT localhost /CMD AccountPassword $ACCOUNT_NAME
