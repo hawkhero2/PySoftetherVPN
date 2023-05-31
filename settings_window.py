@@ -1,6 +1,6 @@
 import os
 import customtkinter
-import
+import os
 
 creds = customtkinter.CTk() 
 creds.geometry("500x250")
