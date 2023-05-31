@@ -1,44 +1,45 @@
 import os
 import customtkinter
-import os
 
-creds = customtkinter.CTk() 
-creds.geometry("500x250")
-creds.title("VPN")
-creds.withdraw()
 
-def create_nic():
-    os.system("vpncmd /")
-    pass
+class Settings(customtkinter.CTk):
+    def __init__(self):
+        super.__init__()
+        
+        self.geometry("500x250")
+        self.title("VPN")
+        self.withdraw()
+        self.resizable(False,False)
 
-def save_creds(credentials : dict):
-    # print("You connected " + acc_input.get())
-    credentials.__setitem__("acc", acc_input.get())
-    credentials.__setitem__("pw", pwd_input.get())
+        self.acc_input = customtkinter.CTkEntry(self, placeholder_text = "account")
+        self.acc_input.place(in_ = self, relx = 0.25, rely = 0.3)
 
-    print("your login credentials are: acc:"+
-          credentials.get("acc")+
-          " with the password: "+credentials.get("pw"))
+        self.pwd_input = customtkinter.CTkEntry(self, 
+                                        placeholder_text = "password")
+        self.pwd_input.place(in_= self, relx = 0.25, rely = 0.4)
+
+
+        self.save_btn = customtkinter.CTkButton(master = self, 
+                                        text = "Save", 
+                                        command = self.save_creds)
+
+        self.create_nic_btn = customtkinter.CTkButton(master = self, 
+                                                text = "Create",
+                                                command = self.create_nic)
+
+        self.save_btn.place(relx=0.25, rely=0.6)
+
     
-    creds.withdraw()
-    vpn_status.iconify()
+    def create_nic():
+        os.system("vpncmd /")
+        pass
 
-acc_input = customtkinter.CTkEntry(creds, placeholder_text = "account")
-acc_input.place(in_ = creds, relx = 0.25, rely = 0.3)
+    def save_creds(self, credentials : dict):
+        # print("You connected " + acc_input.get())
+        credentials.__setitem__("acc",self.acc_input.get())
+        credentials.__setitem__("pw", self.pwd_input.get())
 
-pwd_input = customtkinter.CTkEntry(creds, 
-                                   placeholder_text = "password")
-pwd_input.place(in_= creds, relx = 0.25, rely = 0.4)
-
-
-save_btn = customtkinter.CTkButton(master = creds, 
-                                 text = "Save", 
-                                 command = save_creds)
-
-create_nic_btn = customtkinter.CTkButton(master = creds, 
-                                         text = "Create",
-                                         command = create_nic)
-
-save_btn.place(relx=0.25, rely=0.6)
-
-creds.resizable(False,False)
+        print("your login credentials are: acc:"+
+            credentials.get("acc")+
+            " with the password: "+credentials.get("pw"))
+        

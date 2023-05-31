@@ -4,20 +4,19 @@ import os
 import tkinter
 import customtkinter
 import json
-import main_window
-import settings_window
+from main_window import Main
+from settings_window import Settings
 
-from typing import Optional, Tuple, Union
 
-customtkinter.set_appearance_mode("System")
-customtkinter.set_default_color_theme("blue")
+main = Main
+settings = Settings 
 
 
 def get_conn_status():
     status : bool = True
     return status
 
-connection_status : bool = get_conn_status()
+connection_status :  bool = get_conn_status()
 
 nic_name = ""
 
@@ -26,4 +25,8 @@ credentials = {
     "pw":""
 }
 
-settings = json.load()
+settings.save_creds(settings ,credentials=credentials)
+
+# settings = json.load()
+
+main.mainloop( )
