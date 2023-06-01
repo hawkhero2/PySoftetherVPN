@@ -4,12 +4,12 @@ import os
 import tkinter
 import customtkinter
 import json
-from main_window import Main
-from settings_window import Settings
+import main_window
+import settings_window
 
 
-main = Main
-settings = Settings 
+# settings = settings_window.Settings()
+main = main_window.Main()
 
 
 def get_conn_status():
@@ -25,8 +25,7 @@ credentials = {
     "pw":""
 }
 
-settings.save_creds(settings ,credentials=credentials)
-
+# settings.save(credentials=credentials)
 # settings = json.load()
 
-main.mainloop( )
+main.mainloop()

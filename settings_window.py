@@ -1,10 +1,9 @@
 import os
 import customtkinter
 
-
-class Settings(customtkinter.CTk):
+class Settings(customtkinter.CTkToplevel):
     def __init__(self):
-        super.__init__()
+        super().__init__()
         
         self.geometry("500x250")
         self.title("VPN")
@@ -21,7 +20,7 @@ class Settings(customtkinter.CTk):
 
         self.save_btn = customtkinter.CTkButton(master = self, 
                                         text = "Save", 
-                                        command = self.save_creds)
+                                        command = self.save)
 
         self.create_nic_btn = customtkinter.CTkButton(master = self, 
                                                 text = "Create",
@@ -34,7 +33,7 @@ class Settings(customtkinter.CTk):
         os.system("vpncmd /")
         pass
 
-    def save_creds(self, credentials : dict):
+    def save(self, credentials : dict):
         # print("You connected " + acc_input.get())
         credentials.__setitem__("acc",self.acc_input.get())
         credentials.__setitem__("pw", self.pwd_input.get())
