@@ -1,19 +1,16 @@
 import os
 import customtkinter
-import tkinter
 from settings_window import Settings
 
+# TODO Implement grids
 class Main(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.geometry("500x250")
         self.title("VPN")
+        self.geometry("500x250")
         self.resizable(False,False)
-        # self.set_appearance_mode("System")
-        # self.set_default_color_theme("blue")
 
-        self.settings_window : customtkinter.CTkToplevel = None
 
         self.disconnect_btn = customtkinter.CTkButton(self, 
                                                 text = "Disconnect",  
@@ -28,14 +25,15 @@ class Main(customtkinter.CTk):
                                             command = self.button_connect_vpn)
         self.connect_btn.place(relx = 0.35, rely = 0.8)
         self.settings.place(relx = 0.05, rely = 0.8)
+        self.settings_window : customtkinter.CTkToplevel = None
     
     def settings_open(self):
-        # self.settings_window.iconify()
         if self.settings_window is None or not self.settings_window.winfo_exists():
-            self.settings_window = Settings(self)
+            self.settings_window = Settings()
+            self.settings_window.focus()
         else:
             self.settings_window.focus()
-        self.withdraw()
+        
 
     def button_disconnect_vpn(self):
         cfg_file = open("softether-vpn-client/vpn_config")
