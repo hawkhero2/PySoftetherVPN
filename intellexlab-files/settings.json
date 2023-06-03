@@ -1,6 +1,8 @@
 {
     "nic":"",
-    "account":"",
+    "acc":"test",
+    "pw":"test123",
     "vpn_host":"",
-    "local_gateway":""
+    "local_gateway":"",
+    "key":""
 }

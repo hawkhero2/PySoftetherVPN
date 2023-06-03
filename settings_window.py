@@ -1,6 +1,5 @@
+import json
 import os
-import string
-from typing import Optional, Tuple, Union
 import customtkinter
 
 # TODO implement grids
@@ -28,10 +27,7 @@ class Settings(customtkinter.CTkToplevel):
         self.geometry("500x250")
         self.resizable(False,False)
 
-        self.credentials = {
-            "acc":"",
-            "pw":""
-            }
+        self.settings_file = json.load(open("intellexlab-files/settings.json"))
         self.acc_input = customtkinter.CTkEntry(self, placeholder_text = "account")
         self.acc_input.place(in_ = self, relx = 0.25, rely = 0.3)
 
@@ -63,10 +59,10 @@ class Settings(customtkinter.CTkToplevel):
 
     def save(self):
         # print("You connected " + acc_input.get())
-        self.credentials.__setitem__("acc",self.acc_input.get())
-        self.credentials.__setitem__("pw", self.pwd_input.get())
+        self.settings_file.__setitem__("acc",self.acc_input.get())
+        self.settings_file.__setitem__("pw", self.pwd_input.get())
 
-        print("your login credentials are: acc:"+
-            self.credentials.get("acc")+
-            " with the password: "+self.credentials.get("pw"))
-        self.withdraw()        
+        print("your login settings_file are: acc:"+
+            self.settings_file.get("acc")+
+            " with the password: "+self.settings_file.get("pw"))
+        self.withdraw()

@@ -1,3 +1,4 @@
+import json
 import os
 import customtkinter
 from settings_window import Settings
@@ -11,12 +12,13 @@ class Main(customtkinter.CTk):
         self.geometry("500x250")
         self.resizable(False,False)
 
-
+        self.settings_file = json.load(open("intellexlab-files/settings.json"))
         self.disconnect_btn = customtkinter.CTkButton(self, 
                                                 text = "Disconnect",  
                                                 command =self.button_disconnect_vpn)
 
         self.disconnect_btn.place(relx = 0.65, rely = 0.8)
+        
         self.settings = customtkinter.CTkButton(self, 
                                             text = "Settings", 
                                             command = self.settings_open)
@@ -32,7 +34,8 @@ class Main(customtkinter.CTk):
             self.settings_window = Settings()
             self.settings_window.focus()
         else:
-            self.settings_window.focus()
+            if self.settings_window.state() == "withdrawn":
+                self.settings_window.deiconify()
         
 
     def button_disconnect_vpn(self):
