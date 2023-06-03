@@ -54,8 +54,6 @@ class Settings(customtkinter.CTkToplevel):
             self.nic_window = Nic()
         else:
             self.nic_window.focus()
-        
-        pass
 
     def save(self):
         # print("You connected " + acc_input.get())
