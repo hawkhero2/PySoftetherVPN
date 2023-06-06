@@ -1,7 +1,7 @@
 import json
 import os
 import customtkinter
-from settings_window import Settings
+from libs.settings_window import Settings
 
 # TODO Implement grids
 class Main(customtkinter.CTk):
