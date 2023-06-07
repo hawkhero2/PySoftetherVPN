@@ -47,5 +47,5 @@ class Main(customtkinter.CTk):
         print("terminating connection...")
 
     def button_connect_vpn(self):
-        os.system("sudo vpnclient start")
+        os.system("vpnclient start")
         print("connecting vpnclient...")
