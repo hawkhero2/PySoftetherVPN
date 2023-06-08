@@ -4,5 +4,6 @@
     "pw":"test123",
     "vpn_host":"",
     "local_gateway":"",
-    "key":""
+    "key":"",
+    "window_size":"500x250"
 }

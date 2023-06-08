@@ -1,9 +1,12 @@
 import json
 import os
+import subprocess
 import customtkinter
 from libs.settings_window import Settings
 
 # TODO Implement grids
+# TODO Use subprocess instead of os.system, to catch output of terminal(catch_output=true)
+# TODO Figure out managing outputs from subprocess calls/runs
 class Main(customtkinter.CTk):
     def __init__(self):
         super().__init__()
@@ -12,7 +15,7 @@ class Main(customtkinter.CTk):
         self.geometry("500x250")
         self.resizable(False,False)
 
-        self.settings_file = json.load(open("intellexlab-files/settings.json"))
+        self.settings_file = json.load(open("libs/settings.json"))
         self.disconnect_btn = customtkinter.CTkButton(self, 
                                                 text = "Disconnect",  
                                                 command =self.button_disconnect_vpn)
@@ -39,13 +42,10 @@ class Main(customtkinter.CTk):
         
 
     def button_disconnect_vpn(self):
-        cfg_file = open("softether-vpn-client/vpn_config")
-        for itm in cfg_file:
-            print(itm.split("=\\n"))
-        
         # os.system("vpnclient stop >/dev/null 2>&1")
         print("terminating connection...")
 
     def button_connect_vpn(self):
-        os.system("vpnclient start")
+        # WIP
+        subprocess.run("vpnclient start", capture_output = True)
         print("connecting vpnclient...")

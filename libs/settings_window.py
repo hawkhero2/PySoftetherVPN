@@ -1,8 +1,17 @@
 import json
-import os
+import subprocess
 import customtkinter
 
 # TODO implement grids
+class Connection(customtkinter.CTkToplevel):
+        def __init__(self):
+            super().__init__()
+            self.title("Create Connection")
+            self.geometry("250x120")
+            self.resizable(False, False)
+
+            
+
 class Nic(customtkinter.CTkToplevel):
     def __init__(self):
         super().__init__()
@@ -16,9 +25,8 @@ class Nic(customtkinter.CTkToplevel):
 
     def create_btn(self):
         nic_name =  self.nic_input.get()
-        os.system("vpncmd /CLIENT localhost /CMD NicCreate "+nic_name)
+        subprocess.call("vpncmd /CLIENT localhost /CMD NicCreate "+nic_name)
 
-# TODO implement grids
 class Settings(customtkinter.CTkToplevel):
     def __init__(self):
         super().__init__()
@@ -34,7 +42,7 @@ class Settings(customtkinter.CTkToplevel):
         self.pwd_input = customtkinter.CTkEntry(self, 
                                         placeholder_text = "password")
         self.pwd_input.place(in_= self, relx = 0.25, rely = 0.4)
-
+        
 
         self.save_btn = customtkinter.CTkButton(master = self, 
                                         text = "Save", 
