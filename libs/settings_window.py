@@ -5,7 +5,8 @@ import customtkinter
 setting_file : dict = json.load(open("/libs/settings.json"))
 window_size = setting_file.get("window_size")
 
-# TODO implement grids
+# TODO Implement grids
+# TODO Refactor Settings class into Connection Settings?
 class Connection(customtkinter.CTkToplevel):
         def __init__(self):
             super().__init__()
@@ -13,8 +14,8 @@ class Connection(customtkinter.CTkToplevel):
             self.title("Create Connection")
             self.geometry(window_size)
             self.resizable(False, False)
-
-
+            self.server_gateway = customtkinter.CTkEntry(self, 
+                                                         placeholder_text = "107.0.0.1")
             
 
 class Nic(customtkinter.CTkToplevel):
