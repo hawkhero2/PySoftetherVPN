@@ -16,7 +16,7 @@ class Connection(customtkinter.CTkToplevel):
             self.resizable(False, False)
             self.server_gateway = customtkinter.CTkEntry(self, 
                                                          placeholder_text = "107.0.0.1")
-            
+            self.server_gateway.place()
 
 class Nic(customtkinter.CTkToplevel):
     def __init__(self):
