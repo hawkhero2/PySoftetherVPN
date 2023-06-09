@@ -1,8 +1,12 @@
 import json
-import os
 import subprocess
 import customtkinter
 from libs.settings_window import Settings
+
+
+setting_file : dict = json.load(open("/libs/settings.json"))
+window_size = setting_file.get("window_size")
+
 
 # TODO Implement grids
 # TODO Use subprocess instead of os.system, to catch output of terminal(catch_output=true)
@@ -12,7 +16,7 @@ class Main(customtkinter.CTk):
         super().__init__()
 
         self.title("VPN")
-        self.geometry("500x250")
+        self.geometry(window_size)
         self.resizable(False,False)
 
         self.settings_file = json.load(open("libs/settings.json"))

@@ -2,13 +2,18 @@ import json
 import subprocess
 import customtkinter
 
+setting_file : dict = json.load(open("/libs/settings.json"))
+window_size = setting_file.get("window_size")
+
 # TODO implement grids
 class Connection(customtkinter.CTkToplevel):
         def __init__(self):
             super().__init__()
+            
             self.title("Create Connection")
-            self.geometry("250x120")
+            self.geometry(window_size)
             self.resizable(False, False)
+
 
             
 
@@ -17,7 +22,7 @@ class Nic(customtkinter.CTkToplevel):
         super().__init__()
 
         self.title("Virtual Adapter Name")
-        self.geometry("250x120")
+        self.geometry(window_size)
         self.resizable(False, False)
 
         self.nic_input = customtkinter.CTkEntry(self, 
