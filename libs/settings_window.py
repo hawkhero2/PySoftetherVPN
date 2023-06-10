@@ -2,7 +2,7 @@ import json
 import subprocess
 import customtkinter
 
-setting_file : dict = json.load(open("/libs/settings.json"))
+setting_file : dict = json.load(open("libs/settings.json"))
 window_size = setting_file.get("window_size")
 
 # TODO Implement grids
