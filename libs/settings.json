@@ -5,5 +5,7 @@
     "vpn_host":"",
     "local_gateway":"",
     "key":"",
-    "window_size":"700x550"
+    "window_size":"700x550",
+    "connections":[],
+    "last_selected":""
 }

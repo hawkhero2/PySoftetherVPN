@@ -1,4 +1,4 @@
-from cryptography.fernet import Fernet
+from fernet import Fernet
 import json
 
 # Generates fernet key for encryption ans saves it to settings file ?maybe

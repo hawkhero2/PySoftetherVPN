@@ -30,14 +30,16 @@ class Main(customtkinter.CTk):
         self.title("VPN")
         self.geometry(window_size)
         self.resizable(False,False)
-        self.grid_rowconfigure(0, 1, weight = 1)
+        # self.grid_rowconfigure(0, 1, weight = 1)
         self.settings_file = json.load(open("libs/settings.json"))
         self.disconnect_btn = customtkinter.CTkButton(self, 
                                                 text = "Disconnect",  
                                                 command =self.button_disconnect_vpn)
 
         self.disconnect_btn.place(relx = 0.65, rely = 0.8)
-        
+        self.connection_list = get_connections()
+        self.option_menu = customtkinter.CTkOptionMenu(self, width = 150, height = 34, values = self.connection_list, command =self. select_connection)
+        self.option_menu.place(relx = 0.1, rely = 0.1)
         self.settings = customtkinter.CTkButton(self, 
                                             text = "Settings", 
                                             command = self.settings_open)
@@ -46,7 +48,7 @@ class Main(customtkinter.CTk):
                                             command = self.button_connect_vpn)
         self.connect_btn.place(relx = 0.35, rely = 0.8)
         self.settings.place(relx = 0.05, rely = 0.8)
-        self.connections = TableFrame(master = self)
+        # self.connections = TableFrame(master = self)
         self.settings_window : customtkinter.CTkToplevel = None
     
     def settings_open(self):
@@ -61,6 +63,13 @@ class Main(customtkinter.CTk):
     def button_disconnect_vpn(self):
         # os.system("vpnclient stop >/dev/null 2>&1")
         print("terminating connection...")
+
+    def get_connections():
+        
+        pass
+    
+    def select_connection(self, choice):
+        pass
 
     def button_connect_vpn(self):
         # WIP
