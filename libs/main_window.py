@@ -37,9 +37,12 @@ class Main(customtkinter.CTk):
                                                 command =self.button_disconnect_vpn)
 
         self.disconnect_btn.place(relx = 0.65, rely = 0.8)
-        self.connection_list = get_connections()
-        self.option_menu = customtkinter.CTkOptionMenu(self, width = 150, height = 34, values = self.connection_list, command =self. select_connection)
+        self.connection_list =self.get_connections()
+        self.option_menu = customtkinter.CTkOptionMenu(self, width = 150, height = 34, 
+                                                       values = self.connection_list, 
+                                                       command =self. select_connection)
         self.option_menu.place(relx = 0.1, rely = 0.1)
+        # self.option_menu.set()
         self.settings = customtkinter.CTkButton(self, 
                                             text = "Settings", 
                                             command = self.settings_open)
@@ -64,10 +67,10 @@ class Main(customtkinter.CTk):
         # os.system("vpnclient stop >/dev/null 2>&1")
         print("terminating connection...")
 
-    def get_connections():
+    def get_connections(self):
+        connections = setting_file.get("connections")        
+        return connections
         
-        pass
-    
     def select_connection(self, choice):
         pass
 

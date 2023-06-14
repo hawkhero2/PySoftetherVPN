@@ -6,6 +6,10 @@
     "local_gateway":"",
     "key":"",
     "window_size":"700x550",
-    "connections":[],
+    "connections":
+    [
+        "test_val",
+        "test_val2"
+    ],
     "last_selected":""
 }
