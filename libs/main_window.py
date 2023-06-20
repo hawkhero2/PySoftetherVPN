@@ -8,16 +8,45 @@ setting_file : dict = json.load(open("libs/settings.json"))
 window_size = setting_file.get("window_size")
 
 
-class TableFrame(customtkinter.CTkFrame):
+class TopFrame(customtkinter.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
 
-        self.values = [["test","test2","test3"],
-                       ["test","test2","test3"]
-            ]
+        self.connection_list =self.get_connections()
+        self.option_menu = customtkinter.CTkOptionMenu(self, width = 150, height = 34, 
+                                                    values = self.connection_list, 
+                                                    command = self. select_connection)
 
-        self.table = CTkTable(master=self, row = 4 , column = 3, values=self.values )
-        self.table.pack(expand=True, fill="both")
+        self.option_menu.grid(row = 0, column = 0, padx = 10, pady = 10)
+
+    def get_connections(self):
+        connections = setting_file.get("connections")        
+        return connections
+        
+    def select_connection(self, choice):
+        pass
+
+
+class LowerFrame(customtkinter.CTkFrame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+        self.button = customtkinter.CTkButton(self, width=140, height=70)
+        self.button.grid(row = 0, column = 0, padx = 10, pady = 10) 
+        
+
+# class TableFrame(customtkinter.CTkFrame):
+#     def __init__(self, master, **kwargs):
+#         super().__init__(master, **kwargs)
+
+#         self.values = [["test","test2","test3"],
+#                        ["test","test2","test3"]
+#             ]
+
+#         self.table = CTkTable(master=self, row = 4 , column = 3, values=self.values )
+#         self.table.pack(expand=True, fill="both")
                 
 
 # TODO Implement grids
@@ -31,8 +60,8 @@ class Main(customtkinter.CTk):
         self.geometry(window_size)
         self.resizable(False,False)
         self.grid_rowconfigure(2, weight = 1)
-        self.upper_frame = customtkinter.CTkFrame()
-        self.lower_frame = customtkinter.CTkFrame()
+        self.upper_frame = customtkinter.CTkFrame(self)
+        self.lower_frame = customtkinter.CTkFrame(self)
         
         self.settings_file = json.load(open("libs/settings.json"))
         self.disconnect_btn = customtkinter.CTkButton(self, 
@@ -66,12 +95,12 @@ class Main(customtkinter.CTk):
         # os.system("vpnclient stop >/dev/null 2>&1")
         print("terminating connection...")
 
-    def get_connections(self):
-        connections = setting_file.get("connections")        
-        return connections
+    # def get_connections(self):
+    #     connections = setting_file.get("connections")        
+    #     return connections
         
-    def select_connection(self, choice):
-        pass
+    # def select_connection(self, choice):
+    #     pass
 
     def button_connect_vpn(self):
         # WIP
