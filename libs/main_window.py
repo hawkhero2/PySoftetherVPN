@@ -84,10 +84,10 @@ class Main(customtkinter.CTk):
         self.geometry(window_size)
         self.resizable(False,False)
         self.grid_rowconfigure(2, weight = 1)
-        self.upper_frame = TopFrame(self)
-        self.lower_frame = LowerFrame(self)
-        self.upper_frame.grid(row = 0)
-        self.lower_frame.grid(row = 1) 
+        self.upper_frame = TopFrame(self, padx = 10, pady = 10)
+        self.lower_frame = LowerFrame(self, padx = 10, pady = 10)
+        self.upper_frame.grid(row = 0, sticky = "nsew")
+        self.lower_frame.grid(row = 1, sticky = "nsew")
         # self.settings_file = json.load(open("libs/settings.json"))
         # self.disconnect_btn = customtkinter.CTkButton(self, 
         #                                         text = "Disconnect",  
