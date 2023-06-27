@@ -49,13 +49,13 @@ class LowerFrame(customtkinter.CTkFrame):
         super().__init__(master, **kwargs)
 
         self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(3, weight=1)
+        self.grid_columnconfigure(0, weight = 1)
 
         self.connect_button =  customtkinter.CTkButton(self, text = "Connect", command = self.connect_button_cmd)
         self.connect_button.grid(row = 0, column = 1, padx = 10, pady = 10 , sticky = "ew")
 
         self.disconect_button = customtkinter.CTkButton(self, text="Disconnect", command=self.disconnect_con)
-        self.disconect_button.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.disconect_button.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = "ew")
         
         self.settings_button = customtkinter.CTkButton(self, text = "Settings", command = self.settings_call)
         self.settings_button.grid(row = 0, column = 2, padx = 10, pady = 10, sticky = "ew" )
@@ -83,11 +83,12 @@ class Main(customtkinter.CTk):
         self.title("VPN")
         self.geometry(window_size)
         self.resizable(False,False)
-        self.grid_rowconfigure(2, weight = 1)
-        self.upper_frame = TopFrame(self, padx = 10, pady = 10)
-        self.lower_frame = LowerFrame(self, padx = 10, pady = 10)
-        self.upper_frame.grid(row = 0, sticky = "nsew")
-        self.lower_frame.grid(row = 1, sticky = "nsew")
+        self.grid_rowconfigure(0, weight = 1)
+        self.upper_frame = TopFrame(self)
+        self.lower_frame = LowerFrame(self)
+        self.upper_frame.grid(row = 0, padx = 50, pady = 50, sticky = "ew")
+        self.lower_frame.grid(row = 1, padx = 50, pady = 50, sticky = "ew")
+
         # self.settings_file = json.load(open("libs/settings.json"))
         # self.disconnect_btn = customtkinter.CTkButton(self, 
         #                                         text = "Disconnect",  
