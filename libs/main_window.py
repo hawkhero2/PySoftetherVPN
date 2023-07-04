@@ -52,7 +52,7 @@ class LowerFrame(customtkinter.CTkFrame):
         self.grid_columnconfigure(0, weight = 1)
 
         self.connect_button =  customtkinter.CTkButton(self, text = "Connect", command = self.connect_button_cmd)
-        self.connect_button.grid(row = 0, column = 1, padx = 10, pady = 10 , sticky = "ew")
+        self.connect_button.grid(row = 0, column = 1, padx = 10, pady = 10, sticky = "ew")
 
         self.disconect_button = customtkinter.CTkButton(self, text="Disconnect", command=self.disconnect_con)
         self.disconect_button.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = "ew")
@@ -77,17 +77,34 @@ class LowerFrame(customtkinter.CTkFrame):
 # TODO Use subprocess instead of os.system, to catch output of terminal(catch_output=true)
 # TODO Figure out managing outputs from subprocess calls/runs
 class Main(customtkinter.CTk):
+
+    def connect(self):
+        pass
+
     def __init__(self):
         super().__init__()
 
         self.title("VPN")
         self.geometry(window_size)
         self.resizable(False,False)
-        self.grid_rowconfigure(0, weight = 1)
-        self.upper_frame = TopFrame(self)
-        self.lower_frame = LowerFrame(self)
-        self.upper_frame.grid(row = 0, padx = 50, pady = 50, sticky = "ew")
-        self.lower_frame.grid(row = 1, padx = 50, pady = 50, sticky = "ew")
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
+        self.label_acc = customtkinter.CTkLabel(self, text="account")
+        self.label_acc.grid(row=0, column=0, padx=20, pady=20)
+
+        self.account = customtkinter.CTkEntry(self)
+        self.account.grid(row=1, column=0, padx=20, pady=20, sticky = "new")
+
+        self.password= customtkinter.CTkEntry(self)
+        self.password.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
+
+        self.connect_btn = customtkinter.CTkButton(self, text="Connect", command=self.connect)
+        self.connect_btn.grid(row=4, column=0, padx=20, pady=20, sticky="ew")
+        # self.upper_frame = TopFrame(self)
+        # self.lower_frame = LowerFrame(self)
+        # self.upper_frame.grid(row = 0, padx = 50, pady = 50, sticky = "ew")
+        # self.lower_frame.grid(row = 1, padx = 50, pady = 50, sticky = "ew")
 
         # self.settings_file = json.load(open("libs/settings.json"))
         # self.disconnect_btn = customtkinter.CTkButton(self, 
