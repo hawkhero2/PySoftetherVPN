@@ -78,7 +78,13 @@ class LowerFrame(customtkinter.CTkFrame):
 # TODO Figure out managing outputs from subprocess calls/runs
 class Main(customtkinter.CTk):
 
+    def disconnect(self):
+        pass
+
+
     def connect(self):
+        print("this is account: " +  self.account.get())
+        print("this is password: " + self.password.get())
         pass
 
     def __init__(self):
@@ -87,20 +93,25 @@ class Main(customtkinter.CTk):
         self.title("VPN")
         self.geometry(window_size)
         self.resizable(False,False)
+        self.top_frame = customtkinter.CTkFrame(self)
+        self.bottom_frame = customtkinter.CTkFrame(self)
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        self.label_acc = customtkinter.CTkLabel(self, text="account")
-        self.label_acc.grid(row=0, column=0, padx=20, pady=20)
+        # self.label_acc = customtkinter.CTkLabel(self, text="account")
+        # self.label_acc.grid(row=0, column=0, padx=20, pady=20)
 
-        self.account = customtkinter.CTkEntry(self)
+        self.account = customtkinter.CTkEntry(self, placeholder_text="Account")
         self.account.grid(row=1, column=0, padx=20, pady=20, sticky = "new")
 
-        self.password= customtkinter.CTkEntry(self)
+        self.password= customtkinter.CTkEntry(self,placeholder_text="Password", show="*")
         self.password.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
 
         self.connect_btn = customtkinter.CTkButton(self, text="Connect", command=self.connect)
         self.connect_btn.grid(row=4, column=0, padx=20, pady=20, sticky="ew")
+
+        self.disconnect_btn = customtkinter.CTkButton(self, text="Disconnect", command=self.disconnect)
+        self.disconnect_btn.grid(row=4, column=1, padx=20, pady=20, sticky="ew")
         # self.upper_frame = TopFrame(self)
         # self.lower_frame = LowerFrame(self)
         # self.upper_frame.grid(row = 0, padx = 50, pady = 50, sticky = "ew")
