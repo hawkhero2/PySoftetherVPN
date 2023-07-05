@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
-# import sys
-# from PySide6 import QtCore, QtWidgets, QtGui
-
+import subprocess
 from libs.main_window import Main
 
 
 # TODO check for session token connection ( maybe refresh token)
 
+# run command to start softether vpn, vpnclient start
+subprocess.call("vpnclient start", stdout="logs.txt")
+ 
 main = Main()
 main.mainloop()
 
