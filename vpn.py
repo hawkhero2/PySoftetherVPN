@@ -7,11 +7,14 @@ from libs.main_window import Main
 # TODO check for session token connection ( maybe refresh token)
 
 # run command to start softether vpn, vpnclient start
-subprocess.call("vpnclient start", stdout="logs.txt")
+subprocess.run("vpnclient start", shell=True)
  
 main = Main()
 main.mainloop()
 
+subprocess.run("vpnclient stop", shell=True)
+
+# subprocess.call("vpnclient start", stdout="logs.txt")
 # class MainThread(QtWidgets.QWidget):
 #     # Playing around with PySide
 #     def __init__(self):
