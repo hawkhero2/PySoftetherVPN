@@ -83,6 +83,19 @@ class Main(customtkinter.CTk):
 
 
     def connect(self):
+        account = self.account.get()
+        vpn = self.vpn.get()
+
+        # TODO 
+        # If connection is accepted then write creds to json.
+        # Else display error message window
+
+        setting_file.__setitem__("acc",account)
+        setting_file.__setitem__("vpn-id", vpn)
+        json_obj = json.dumps(setting_file, indent=5)
+        with open("libs/settings.json", "w") as outfile:
+            outfile.write(json_obj)
+
         print("this is account: " +  self.account.get())
         print("this is password: " + self.password.get())
         pass
@@ -118,8 +131,11 @@ class Main(customtkinter.CTk):
         self.account = customtkinter.CTkEntry(self.top_frame, placeholder_text="Account")
         self.account.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
 
-        self.password= customtkinter.CTkEntry(self.top_frame, placeholder_text="Password", show="*")
+        self.password = customtkinter.CTkEntry(self.top_frame, placeholder_text="Password", show="*")
         self.password.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
+
+        self.vpn = customtkinter.CTkEntry(self.top_frame, placeholder_text="VPN IP")
+        self.vpn.grid(row=3,column=0, padx=20, pady=20, sticky="ew" )
 
         self.connect_btn = customtkinter.CTkButton(self.bottom_frame, text="Connect", command=self.connect)
         self.connect_btn.grid(row=3, column=0, padx=20, pady=20, sticky="ew")

@@ -1,15 +1,7 @@
 {
-    "nic":"",
-    "acc":"test",
-    "pw":"test123",
-    "vpn_host":"",
-    "local_gateway":"",
-    "key":"",
-    "window_size":"450x300",
-    "connections":
-    [
-        "test_val",
-        "test_val2"
-    ],
-    "last_selected":""
+       "nic": "",
+       "acc": "test123",
+       "vpn-ip": "",
+       "window_size": "450x400",
+       "vpn-id": "0.0.0.0"
 }
