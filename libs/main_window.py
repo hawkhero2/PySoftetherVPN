@@ -79,6 +79,7 @@ window_size = setting_file.get("window_size")
 class Main(customtkinter.CTk):
 
     def disconnect(self):
+        
         pass
 
 
@@ -86,9 +87,8 @@ class Main(customtkinter.CTk):
         account = self.account.get()
         vpn = self.vpn.get()
         password = self.password.get()
-
-        subprocess.run("vpncmd ", shell=True)
-
+        subprocess.run(f"vpncmd /CLIENT {vpn} /CMD AccountCreate {account}", shell=True)
+        subprocess.run(f"vpncmd /CLIENT {vpn} /CMD AccountPassword {password}", shell=True)
 
         # TODO 
         # If connection is accepted then write creds to json.
