@@ -73,20 +73,18 @@ window_size = setting_file.get("window_size")
 #         self.table.pack(expand=True, fill="both")
                 
 
-# TODO Implement grids
-# TODO Use subprocess instead of os.system, to catch output of terminal(catch_output=true)
-# TODO Figure out managing outputs from subprocess calls/runs
 class Main(customtkinter.CTk):
 
     def disconnect(self):
         
         pass
 
-
+# TODO Check correct network credentials for the vpn 
     def connect(self):
         account = self.account.get()
         vpn = self.vpn.get()
         password = self.password.get()
+        # not functional
         subprocess.run(f"vpncmd /CLIENT {vpn} /CMD AccountCreate {account}", shell=True)
         subprocess.run(f"vpncmd /CLIENT {vpn} /CMD AccountPassword {password}", shell=True)
 
@@ -129,9 +127,6 @@ class Main(customtkinter.CTk):
         self.bottom_frame.grid_columnconfigure(1, weight=1)
         self.bottom_frame.grid_rowconfigure(0, weight=1)
 
-        # self.label_acc = customtkinter.CTkLabel(self, text="account")
-        # self.label_acc.grid(row=0, column=0, padx=20, pady=20)
-
         self.account = customtkinter.CTkEntry(self.top_frame, placeholder_text="Account")
         self.account.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
 
@@ -146,28 +141,5 @@ class Main(customtkinter.CTk):
 
         self.disconnect_btn = customtkinter.CTkButton(self.bottom_frame, text="Disconnect", command=self.disconnect)
         self.disconnect_btn.grid(row=3, column=1, padx=20, pady=20, sticky="ew")
-        # self.upper_frame = TopFrame(self)
-        # self.lower_frame = LowerFrame(self)
-        # self.upper_frame.grid(row = 0, padx = 50, pady = 50, sticky = "ew")
-        # self.lower_frame.grid(row = 1, padx = 50, pady = 50, sticky = "ew")
-
-        # self.settings_file = json.load(open("libs/settings.json"))
-        # self.disconnect_btn = customtkinter.CTkButton(self, 
-        #                                         text = "Disconnect",  
-        #                                         command =self.button_disconnect_vpn)
-
-       # self.disconnect_btn.place(relx = 0.65, rely = 0.8)
-
-        # self.disconnect_btn.grid( row=2 , padx = 20, pady = 20)
-        # self.connection_list =self.get_connections()
-        # self.option_menu = customtkinter.CTkOptionMenu(self, width = 150, height = 34, 
-        #                                                values = self.connection_list, 
-        #                                                command = self. select_connection)
-        # self.settings = customtkinter.CTkButton(self, 
-        #                                     text = "Settings", 
-        #                                     command = self.settings_open)
-        # self.connect_btn = customtkinter.CTkButton(self, 
-        #                                     text = "Connect",
-        #                                     command = self.button_connect_vpn)
         self.settings_window : customtkinter.CTkToplevel = None
     
