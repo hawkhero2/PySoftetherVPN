@@ -85,6 +85,10 @@ class Main(customtkinter.CTk):
     def connect(self):
         account = self.account.get()
         vpn = self.vpn.get()
+        password = self.password.get()
+
+        subprocess.run("vpncmd ", shell=True)
+
 
         # TODO 
         # If connection is accepted then write creds to json.
