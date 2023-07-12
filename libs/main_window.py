@@ -75,6 +75,10 @@ window_size = setting_file.get("window_size")
 
 class Main(customtkinter.CTk):
 
+    # TODO https://www.youtube.com/watch?v=i2zN1IFKNYU&pp=ygUgc2V0dXAgc29mdGV0aGVyIHZwbiBjbGllbnQgbGludXg%3D
+    def set_startup_conn(self):
+        # not tested yet
+        subprocess.run(f"vpncmd /client accountstartupset", shell=True)
     def disconnect(self):
         
         pass
