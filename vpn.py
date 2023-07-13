@@ -8,11 +8,16 @@ from libs.main_window import Main
 
 # run command to start softether vpn, vpnclient start
 subprocess.run("vpnclient start", shell=True)
+output = subprocess.run("vpncmd /client localhost /cmd accountlist", shell=True, capture_output=True)
+print(f"this is the : {output}")
  
-main = Main()
-main.mainloop()
+# main = Main()
+# main.mainloop()
 
 subprocess.run("vpnclient stop", shell=True)
+
+
+
 
 # subprocess.call("vpnclient start", stdout="logs.txt")
 # class MainThread(QtWidgets.QWidget):

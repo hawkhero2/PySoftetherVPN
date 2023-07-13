@@ -73,14 +73,18 @@ window_size = setting_file.get("window_size")
 #         self.table.pack(expand=True, fill="both")
                 
 
+# Pentru a sterge virtual adapter comanda:
+# sudo ip link delete <adapter_name>
 class Main(customtkinter.CTk):
 
     # TODO https://www.youtube.com/watch?v=i2zN1IFKNYU&pp=ygUgc2V0dXAgc29mdGV0aGVyIHZwbiBjbGllbnQgbGludXg%3D
     def set_startup_conn(self):
         # not tested yet
-        subprocess.run(f"vpncmd /client accountstartupset", shell=True)
+        subprocess.run(f"vpncmd /client accountstartupset", shell=True, capture_output=True)
+
+
     def disconnect(self):
-        
+        subprocess.run(f"") 
         pass
 
 # TODO Check correct network credentials for the vpn 
