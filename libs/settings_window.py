@@ -18,30 +18,29 @@ class Connection(customtkinter.CTkToplevel):
                                                          placeholder_text = "107.0.0.1")
             self.server_gateway.place()
 
-class Nic(customtkinter.CTkToplevel):
-    def __init__(self):
-        super().__init__()
+# class Nic(customtkinter.CTkToplevel):
+#     def __init__(self):
+#         super().__init__()
 
-        self.title("Virtual Adapter Name")
-        self.geometry(window_size)
-        self.resizable(False, False)
+#         self.title("Virtual Adapter Name")
+#         self.geometry(window_size)
+#         self.resizable(False, False)
 
-        self.nic_input = customtkinter.CTkEntry(self, 
-                                                placeholder_text="Virtual Adapter Name",)
+#         self.nic_input = customtkinter.CTkEntry(self, 
+#                                                 placeholder_text="Virtual Adapter Name",)
 
-    def create_btn(self):
-        nic_name =  self.nic_input.get()
-        subprocess.call("vpncmd /CLIENT localhost /CMD NicCreate "+nic_name)
+#     def create_btn(self):
+#         nic_name =  self.nic_input.get()
+#         subprocess.call("vpncmd /CLIENT localhost /CMD NicCreate "+nic_name)
 
 class Settings(customtkinter.CTkToplevel):
     def __init__(self):
         super().__init__()
         
         self.title("Settings")
-        self.geometry("500x250")
+        self.geometry(window_size)
         self.resizable(False,False)
 
-        self.settings_file = json.load(open("intellexlab-files/settings.json"))
         self.acc_input = customtkinter.CTkEntry(self, placeholder_text = "account")
         self.acc_input.place(in_ = self, relx = 0.25, rely = 0.3)
 
@@ -64,14 +63,11 @@ class Settings(customtkinter.CTkToplevel):
         self.nic_window.place(relx=0.25, rely=0.6)
     
     def create_nic(self):
-        if self.nic_window is None or not self.nic_window.winfo_exists():
-            self.nic_window = Nic()
-        else:
-            self.nic_window.focus()
+        pass
 
     def save(self):
         # print("You connected " + acc_input.get())
-        self.settings_file.__setitem__("acc",self.acc_input.get())
+        setting_file.__setitem__("acc",self.acc_input.get())
         self.settings_file.__setitem__("pw", self.pwd_input.get())
 
         print("your login settings_file are: acc:"+

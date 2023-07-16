@@ -7,7 +7,6 @@ from libs.CTkTable import *
 setting_file : dict = json.load(open("libs/settings.json"))
 window_size = setting_file.get("window_size")
 
-
 # class TopFrame(customtkinter.CTkFrame):
 #     def __init__(self, master, **kwargs):
 #         super().__init__(master, **kwargs)
@@ -73,6 +72,7 @@ window_size = setting_file.get("window_size")
 #         self.table.pack(expand=True, fill="both")
                 
 
+
 # Pentru a sterge virtual adapter comanda:
 # sudo ip link delete <adapter_name>
 class Main(customtkinter.CTk):
@@ -82,33 +82,56 @@ class Main(customtkinter.CTk):
         # not tested yet
         subprocess.run(f"vpncmd /client accountstartupset", shell=True, capture_output=True)
 
+    def settings_btn(self):
+        if self.settings_window is None or not self.settings_window.winfo_exists():
+            self.settings_window = Settings()
+            self.settings_window.focus()
+        else:
+            if self.settings_window.state() == "withdrawn":
+                self.settings_window.deiconify()
+ 
+        pass
 
     def disconnect(self):
-        subprocess.run(f"") 
+        if(subprocess.run(f"ip a|grep vpn", shell=True)==""):
+            print("vpn adapter not created")
+            # subprocess.run(f"") 
+        else:
+            print("vpn adapter already created")
         pass
 
 # TODO Check correct network credentials for the vpn 
     def connect(self):
-        account = self.account.get()
-        vpn = self.vpn.get()
-        password = self.password.get()
-        # not functional
-        subprocess.run(f"vpncmd /CLIENT {vpn} /CMD AccountCreate {account}", shell=True)
-        subprocess.run(f"vpncmd /CLIENT {vpn} /CMD AccountPassword {password}", shell=True)
+        if(subprocess.run(f"ip a|grep vpn", shell=True)==""):
+            print("vpn adapter not created")
+            subprocess.run(f"vpncmd /client localhost /cmd niccreate vpn")
+            # subprocess.run(f"") 
+        else:
+            print("vpn adapter already created")
 
-        # TODO 
-        # If connection is accepted then write creds to json.
-        # Else display error message window
+            account = self.account.get()
+            vpn = self.vpn.get()
+            password = self.password.get()
+            # not functional
+            subprocess.run(f"vpncmd /CLIENT localhost /CMD AccountCreate {account}", shell=True)
+            subprocess.run(f"vpncmd /CLIENT localhost /CMD AccountPassword {password}", shell=True)
 
-        setting_file.__setitem__("acc",account)
-        setting_file.__setitem__("vpn-id", vpn)
-        json_obj = json.dumps(setting_file, indent=5)
-        with open("libs/settings.json", "w") as outfile:
-            outfile.write(json_obj)
+            # TODO 
+            # If connection is accepted then write creds to json.
+            # Else display error message window
 
-        print("this is account: " +  self.account.get())
-        print("this is password: " + self.password.get())
+            setting_file.__setitem__("acc",account)
+            setting_file.__setitem__("vpn-id", vpn)
+            json_obj = json.dumps(setting_file, indent=5)
+            with open("libs/settings.json", "w") as outfile:
+                outfile.write(json_obj)
+
+            print("this is account: " +  self.account.get())
+            print("this is password: " + self.password.get())
+            pass
+    def connections_list_callback(self):
         pass
+    
 
     def __init__(self):
         super().__init__()
@@ -129,8 +152,10 @@ class Main(customtkinter.CTk):
         # self.grid_columnconfigure(0, weight=1)
 
         self.top_frame.grid_columnconfigure(0, weight=1)
-        
-        
+        self.connection_obj = setting_file.get("connection") 
+        self.connections = [self.connection_obj["name"]]
+        self.connections_list = customtkinter.CTkOptionMenu(self, values=self.connections, command=self.connections_list_callback)
+
         self.bottom_frame.grid_columnconfigure(0, weight=1)
         self.bottom_frame.grid_columnconfigure(1, weight=1)
         self.bottom_frame.grid_rowconfigure(0, weight=1)
@@ -144,10 +169,11 @@ class Main(customtkinter.CTk):
         self.vpn = customtkinter.CTkEntry(self.top_frame, placeholder_text="VPN IP")
         self.vpn.grid(row=3,column=0, padx=20, pady=20, sticky="ew" )
 
-        self.connect_btn = customtkinter.CTkButton(self.bottom_frame, text="Connect", command=self.connect)
+        self.connect_btn = customtkinter.CTkButton(self.bottom_frame, text="Connect", state="disabled",command=self.connect)
         self.connect_btn.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
 
         self.disconnect_btn = customtkinter.CTkButton(self.bottom_frame, text="Disconnect", command=self.disconnect)
         self.disconnect_btn.grid(row=3, column=1, padx=20, pady=20, sticky="ew")
+        
         self.settings_window : customtkinter.CTkToplevel = None
     

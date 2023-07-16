@@ -1,7 +1,10 @@
 {
-       "nic": "",
-       "acc": "test123",
-       "vpn-ip": "",
        "window_size": "450x400",
-       "vpn-id": "0.0.0.0"
+       "connection":{
+              "name":"downtown",
+              "vpn_ip":"",
+              "acc":"",
+              "pw":"",
+              "nic":""
+       }
 }

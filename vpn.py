@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import json
 import subprocess
 from libs.main_window import Main
 
@@ -8,11 +9,12 @@ from libs.main_window import Main
 
 # run command to start softether vpn, vpnclient start
 subprocess.run("vpnclient start", shell=True)
-output = subprocess.run("vpncmd /client localhost /cmd accountlist", shell=True, capture_output=True)
-print(f"this is the : {output}")
- 
-# main = Main()
-# main.mainloop()
+
+# settings:dict = json.load(open("libs/settings.json"))
+# connection:dict = settings.get("connection")
+# connection_name = connection.get("name")
+main = Main()
+main.mainloop()
 
 subprocess.run("vpnclient stop", shell=True)
 
