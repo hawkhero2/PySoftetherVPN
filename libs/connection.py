@@ -8,10 +8,14 @@ window_size = settings_file.get("window_size")
 class Connection(customtkinter.CTkToplevel):
     def create_connection(self):
         subprocess.run(f"vpncmd /client localhost /cmd niccreate vpn")
+        settings_file.__setitem__("nic","vpn")
 
         if(self.account.get() !="" & self.password.get() !="" & self.vpn.get() !=""):
             subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.account.get()}")
             subprocess.run(f"vpncmd /client localhost /cmd accountPassword {self.password.get()}") 
+            # TODO look into the following command
+            # TODO use this full command instead of above one. AccountCreate represents the connection name
+            subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.connection_name} /server {self.vpn} /username {self.account} /nicname {settings_file.get('nic')}", shell=True)
         
 
 
@@ -23,6 +27,9 @@ class Connection(customtkinter.CTkToplevel):
         self.resizable(False,False)
  
         self.base_frame = customtkinter.CTkFrame(self)
+
+        self.connection_name = customtkinter.CTkEntry(self.base_frame, placeholder_text="Name for connection")
+        self.connection_name.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
 
         self.account = customtkinter.CTkEntry(self.base_frame, placeholder_text="Account")
         self.account.grid(row=1, column=0, padx=20, pady=20, sticky="ew")

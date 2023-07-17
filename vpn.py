@@ -13,9 +13,12 @@ subprocess.run("vpnclient start", shell=True)
 # settings:dict = json.load(open("libs/settings.json"))
 # connection:dict = settings.get("connection")
 # connection_name = connection.get("name")
-main = Main()
-main.mainloop()
-
+# main = Main()
+# main.mainloop()
+output = subprocess.run(f"vpncmd /client localhost /cmd accountlist", shell=True, capture_output=True)
+print(f"This is the output of the command : {output}")
+print(f"--------------")
+print(f"This is the stdout: {output.stdout.decode().splitlines(True)}")
 subprocess.run("vpnclient stop", shell=True)
 
 
