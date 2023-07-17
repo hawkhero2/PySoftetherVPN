@@ -148,32 +148,38 @@ class Main(customtkinter.CTk):
 
         self.top_frame.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
         self.bottom_frame.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
-        # self.grid_rowconfigure(0, weight=1)
-        # self.grid_columnconfigure(0, weight=1)
-
         self.top_frame.grid_columnconfigure(0, weight=1)
-        self.connection_obj = setting_file.get("connection") 
-        self.connections = [self.connection_obj["name"]]
-        self.connections_list = customtkinter.CTkOptionMenu(self, values=self.connections, command=self.connections_list_callback)
 
+        self.connection_obj = setting_file.get("connection")
+        self.connections = [self.connection_obj["name"]]
+        self.connections_list = customtkinter.CTkOptionMenu(self.top_frame, values=self.connections, command=self.connections_list_callback)
+        self.connections_list.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
+
+        self.disconnected_img = customtkinter.CTkImage(dark_image="/img/online.png", light_image="/img/online.png", size=(10,10))
+        self.status_label = customtkinter.CTkLabel(self.top_frame, text="Status", image=self.disconnected_img)
+        self.status_label.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
+        
         self.bottom_frame.grid_columnconfigure(0, weight=1)
         self.bottom_frame.grid_columnconfigure(1, weight=1)
         self.bottom_frame.grid_rowconfigure(0, weight=1)
 
-        self.account = customtkinter.CTkEntry(self.top_frame, placeholder_text="Account")
-        self.account.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
+        # self.account = customtkinter.CTkEntry(self.top_frame, placeholder_text="Account")
+        # self.account.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
 
-        self.password = customtkinter.CTkEntry(self.top_frame, placeholder_text="Password", show="*")
-        self.password.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
+        # self.password = customtkinter.CTkEntry(self.top_frame, placeholder_text="Password", show="*")
+        # self.password.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
 
-        self.vpn = customtkinter.CTkEntry(self.top_frame, placeholder_text="VPN IP")
-        self.vpn.grid(row=3,column=0, padx=20, pady=20, sticky="ew" )
+        # self.vpn = customtkinter.CTkEntry(self.top_frame, placeholder_text="VPN IP")
+        # self.vpn.grid(row=3,column=0, padx=20, pady=20, sticky="ew" )
 
-        self.connect_btn = customtkinter.CTkButton(self.bottom_frame, text="Connect", state="disabled",command=self.connect)
+        self.settings = customtkinter.CTkButton(self.top_frame, text="Settings", state="disabled", command=self.settings_btn)
+
+        self.connect_btn = customtkinter.CTkButton(self.bottom_frame, text="Connect", state="enabled",command=self.connect)
         self.connect_btn.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
 
-        self.disconnect_btn = customtkinter.CTkButton(self.bottom_frame, text="Disconnect", command=self.disconnect)
+        self.disconnect_btn = customtkinter.CTkButton(self.bottom_frame, text="Disconnect", state="disabled", command=self.disconnect)
         self.disconnect_btn.grid(row=3, column=1, padx=20, pady=20, sticky="ew")
         
         self.settings_window : customtkinter.CTkToplevel = None
+        self.create_connection_window :customtkinter.CTkToplevel = None
     

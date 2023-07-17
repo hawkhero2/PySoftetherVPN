@@ -41,27 +41,18 @@ class Settings(customtkinter.CTkToplevel):
         self.geometry(window_size)
         self.resizable(False,False)
 
-        self.acc_input = customtkinter.CTkEntry(self, placeholder_text = "account")
-        self.acc_input.place(in_ = self, relx = 0.25, rely = 0.3)
+        self.account = customtkinter.CTkEntry(self.top_frame, placeholder_text="Account")
+        self.account.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
 
-        self.pwd_input = customtkinter.CTkEntry(self, 
-                                        placeholder_text = "password")
-        self.pwd_input.place(in_= self, relx = 0.25, rely = 0.4)
-        
+        self.password = customtkinter.CTkEntry(self.top_frame, placeholder_text="Password", show="*")
+        self.password.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
 
-        self.save_btn = customtkinter.CTkButton(master = self, 
-                                        text = "Save", 
-                                        command = self.save)
+        self.vpn = customtkinter.CTkEntry(self.top_frame, placeholder_text="VPN IP")
+        self.vpn.grid(row=3,column=0, padx=20, pady=20, sticky="ew" )
 
-        self.create_nic_btn = customtkinter.CTkButton(master = self, 
-                                                text = "Create",
-                                                command = self.create_nic)
+        self.connect_btn = customtkinter.CTkButton(self.bottom_frame, text="Connect", state="disabled",command=self.connect)
+        self.connect_btn.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
 
-        self.save_btn.place(relx=0.25, rely=0.6)
-
-        self.nic_window : customtkinter.CTkToplevel = None
-        self.nic_window.place(relx=0.25, rely=0.6)
-    
     def create_nic(self):
         pass
 
