@@ -18,10 +18,14 @@ subprocess.run("vpnclient start", shell=True)
 output = subprocess.run(f"vpncmd /client localhost /cmd accountlist", shell=True, capture_output=True)
 print(f"This is the output of the command : {output}")
 print(f"--------------")
-print(f"This is the stdout: {output.stdout.decode().splitlines(True)}")
+converted_output = output.stdout.decode().splitlines(True)
+print(f"This is the stdout:{converted_output}")
+
+print(len(converted_output))
 subprocess.run("vpnclient stop", shell=True)
 
-
+# from index 13 starts the accountlist table
+print(converted_output[13])
 
 
 # subprocess.call("vpnclient start", stdout="logs.txt")

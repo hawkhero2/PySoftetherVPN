@@ -58,8 +58,8 @@ class Settings(customtkinter.CTkToplevel):
 
     def save(self):
         # print("You connected " + acc_input.get())
-        setting_file.__setitem__("acc",self.acc_input.get())
-        self.settings_file.__setitem__("pw", self.pwd_input.get())
+        setting_file["acc"] = self.acc_input.get()
+        self.settings_file[""] = ("pw", self.pwd_input.get())
 
         print("your login settings_file are: acc:"+
             self.settings_file.get("acc")+

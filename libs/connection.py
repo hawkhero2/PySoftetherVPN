@@ -8,7 +8,7 @@ window_size = settings_file.get("window_size")
 class Connection(customtkinter.CTkToplevel):
     def create_connection(self):
         subprocess.run(f"vpncmd /client localhost /cmd niccreate vpn")
-        settings_file.__setitem__("nic","vpn")
+        settings_file["nic"] = "vpn"
 
         if(self.account.get() !="" & self.password.get() !="" & self.vpn.get() !=""):
             subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.account.get()}")
@@ -16,6 +16,7 @@ class Connection(customtkinter.CTkToplevel):
             # TODO look into the following command
             # TODO use this full command instead of above one. AccountCreate represents the connection name
             subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.connection_name} /server {self.vpn} /username {self.account} /nicname {settings_file.get('nic')}", shell=True)
+            
         
 
 

@@ -120,8 +120,8 @@ class Main(customtkinter.CTk):
             # If connection is accepted then write creds to json.
             # Else display error message window
 
-            setting_file.__setitem__("acc",account)
-            setting_file.__setitem__("vpn-id", vpn)
+            setting_file["acc"] = account
+            setting_file["vpn-id"] = vpn
             json_obj = json.dumps(setting_file, indent=5)
             with open("libs/settings.json", "w") as outfile:
                 outfile.write(json_obj)
@@ -173,6 +173,10 @@ class Main(customtkinter.CTk):
         # self.vpn.grid(row=3,column=0, padx=20, pady=20, sticky="ew" )
 
         self.settings = customtkinter.CTkButton(self.top_frame, text="Settings", state="disabled", command=self.settings_btn)
+
+        self.output = subprocess.run(f"vpncmd /client localhost /cmd accountlist", shell=True, capture_output=True)
+        self.str_output : str = str(self.output.stdout)
+        self.check_conn_status = self.str_output.splitlines()
 
         self.connect_btn = customtkinter.CTkButton(self.bottom_frame, text="Connect", state="enabled",command=self.connect)
         self.connect_btn.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
