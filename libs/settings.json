@@ -1,10 +1,8 @@
 {
        "window_size": "450x400",
-       "connection":{
-              "name":"downtown",
-              "vpn_ip":"",
-              "acc":"",
-              "pw":"",
-              "nic":""
-       }
+       "connection_name":"",
+       "vpn_ip":"",
+       "acc":"",
+       "pw":"",
+       "nic":""
 }

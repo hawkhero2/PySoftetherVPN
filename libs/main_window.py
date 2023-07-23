@@ -3,6 +3,7 @@ import subprocess
 import customtkinter
 from libs.settings_window import Settings
 from libs.CTkTable import *
+from libs.connection import *
 
 setting_file : dict = json.load(open("libs/settings.json"))
 window_size = setting_file.get("window_size")
@@ -26,7 +27,6 @@ window_size = setting_file.get("window_size")
         
 #     def select_connection(self, choice):
 #         pass
-
 
 # class LowerFrame(customtkinter.CTkFrame):
 #     def settings_call(self):
@@ -57,8 +57,7 @@ window_size = setting_file.get("window_size")
 #         self.disconect_button.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = "ew")
         
 #         self.settings_button = customtkinter.CTkButton(self, text = "Settings", command = self.settings_call)
-#         self.settings_button.grid(row = 0, column = 2, padx = 10, pady = 10, sticky = "ew" )
-        
+#         self.settings_button.grid(row = 0, column = 2, padx = 10, pady = 10, sticky = "ew" )   
  
 # class TableFrame(customtkinter.CTkFrame):
 #     def __init__(self, master, **kwargs):
@@ -77,6 +76,23 @@ window_size = setting_file.get("window_size")
 # sudo ip link delete <adapter_name>
 class Main(customtkinter.CTk):
 
+    def create_connection_window(self):
+        if self.connection_window is None or not self.connection_window.winfo_exists():
+            self.connection_window = Connection()
+            self.connection_window.focus()
+        else:
+            if self.connection_window.state() == "withdrawn":
+                self.connection_window.deiconify()
+        pass
+
+    def get_connection_btn_state(self):
+        state=""
+        if setting_file["connection_name"] == "":
+            state = "enabled"
+        else :
+            state = "disabled"
+        return state
+ 
     # TODO https://www.youtube.com/watch?v=i2zN1IFKNYU&pp=ygUgc2V0dXAgc29mdGV0aGVyIHZwbiBjbGllbnQgbGludXg%3D
     def set_startup_conn(self):
         # not tested yet
@@ -90,7 +106,6 @@ class Main(customtkinter.CTk):
             if self.settings_window.state() == "withdrawn":
                 self.settings_window.deiconify()
  
-        pass
 
     def disconnect(self):
         if(subprocess.run(f"ip a|grep vpn", shell=True)==""):
@@ -109,9 +124,9 @@ class Main(customtkinter.CTk):
         else:
             print("vpn adapter already created")
 
-            account = self.account.get()
-            vpn = self.vpn.get()
-            password = self.password.get()
+            account = setting_file["acc"]
+            vpn = setting_file["vpn_ip"]
+            password = setting_file["pw"]
             # not functional
             subprocess.run(f"vpncmd /CLIENT localhost /CMD AccountCreate {account}", shell=True)
             subprocess.run(f"vpncmd /CLIENT localhost /CMD AccountPassword {password}", shell=True)
@@ -126,8 +141,6 @@ class Main(customtkinter.CTk):
             with open("libs/settings.json", "w") as outfile:
                 outfile.write(json_obj)
 
-            print("this is account: " +  self.account.get())
-            print("this is password: " + self.password.get())
             pass
     def connections_list_callback(self):
         pass
@@ -146,22 +159,30 @@ class Main(customtkinter.CTk):
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
+        self.settings_window : customtkinter.CTkToplevel = None
+        self.connection_window :customtkinter.CTkToplevel = None
+        
         self.top_frame.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
         self.bottom_frame.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
         self.top_frame.grid_columnconfigure(0, weight=1)
 
-        self.connection_obj = setting_file.get("connection")
-        self.connections = [self.connection_obj["name"]]
+        self.connections_label = customtkinter.CTkLabel(self.top_frame, text="Connections")
+        self.connections_label.grid(row=0, column=0, padx=20, pady=20, sticky="w")
+        self.connections = [setting_file["connection_name"]]
         self.connections_list = customtkinter.CTkOptionMenu(self.top_frame, values=self.connections, command=self.connections_list_callback)
-        self.connections_list.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
+        self.connections_list.grid(row=0, column=1, padx=20, pady=20, sticky="ew")
+       
+        # self.disconnected_img = customtkinter.CTkImage(dark_image="/img/online.png", light_image="/img/online.png", size=(10,10))
+        self.status_label = customtkinter.CTkLabel(self.top_frame, text="Status")
+        self.status_label.grid(row=1, column=0, padx=20, pady=20, sticky="w")
 
-        self.disconnected_img = customtkinter.CTkImage(dark_image="/img/online.png", light_image="/img/online.png", size=(10,10))
-        self.status_label = customtkinter.CTkLabel(self.top_frame, text="Status", image=self.disconnected_img)
-        self.status_label.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
-        
+        self.create_connection_btn = customtkinter.CTkButton(self.top_frame, text="Create Connection", state=self.get_connection_btn_state(), command=self.create_connection_window)
+        self.create_connection_btn.grid(row=1, column=1, padx=20, pady=20, sticky="ew")
+ 
         self.bottom_frame.grid_columnconfigure(0, weight=1)
         self.bottom_frame.grid_columnconfigure(1, weight=1)
         self.bottom_frame.grid_rowconfigure(0, weight=1)
+
 
         # self.account = customtkinter.CTkEntry(self.top_frame, placeholder_text="Account")
         # self.account.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
@@ -184,6 +205,3 @@ class Main(customtkinter.CTk):
         self.disconnect_btn = customtkinter.CTkButton(self.bottom_frame, text="Disconnect", state="disabled", command=self.disconnect)
         self.disconnect_btn.grid(row=3, column=1, padx=20, pady=20, sticky="ew")
         
-        self.settings_window : customtkinter.CTkToplevel = None
-        self.create_connection_window :customtkinter.CTkToplevel = None
-    

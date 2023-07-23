@@ -34,6 +34,7 @@ class Connection(customtkinter.CTkToplevel):
 #         subprocess.call("vpncmd /CLIENT localhost /CMD NicCreate "+nic_name)
 
 class Settings(customtkinter.CTkToplevel):
+
     def __init__(self):
         super().__init__()
         
