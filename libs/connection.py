@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import json
 import subprocess
 import customtkinter
@@ -8,15 +9,13 @@ window_size = settings_file.get("window_size")
 class Connection(customtkinter.CTkToplevel):
 
     def create_connection(self):
-        # subprocess.run(f"vpncmd /client localhost /cmd niccreate vpn")
-        settings_file["nic"] = "vpn"
+        vpn_name :str  = settings_file["vpn_name"]
 
-        if(self.account.get() !="" & self.password.get() !="" & self.vpn.get() !=""):
-            subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.account.get()}")
-            subprocess.run(f"vpncmd /client localhost /cmd accountPassword {self.password.get()}") 
-            # TODO look into the following command
-            # TODO use this full command instead of above one. AccountCreate represents the connection name
-            subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.connection_name} /server {self.vpn} /username {self.account} /nicname {settings_file.get('nic')}", shell=True)
+        subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.account.get()}", shell=True)
+        subprocess.run(f"vpncmd /client localhost /cmd accountPassword {self.password.get()}", shell=True) 
+        # TODO look into the following command
+        # TODO use this full command instead of above one. AccountCreate represents the connection name
+        subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.connection_name} /server {self.vpn} /username {self.account} /nicname {settings_file.get('nic')}", shell=True)
 
     def __init__(self):
         super().__init__()
