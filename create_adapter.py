@@ -14,6 +14,8 @@ if adapter_name != "":
         settings_file["vpn_name"] = adapter_name 
         json_obj = json.dumps(settings_file, indent=5)
         with open("libs/settings.json", "w") as outfile:
-            outfile.write()
+            outfile.write(json_obj)
     else:
         print(f"The operation failed with the following error : {output.stdout.decode()}")
+else:
+    print("There is already a vpn created")
