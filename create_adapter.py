@@ -6,16 +6,23 @@ import subprocess
 settings_file : dict = json.load(open("libs/settings.json"))
 
 adapter_name = input('Input name of the adapter to be created : ')
-if adapter_name != "":
-    subprocess.run(f"sudo vpnclient start", shell=True)
-    output = subprocess.run(f"sudo vpncmd /client localhost /client niccreate {adapter_name}", shell=True, capture_output=True)
+
+if adapter_name != "" and adapter_name != settings_file["vpn_name"]:
     
-    if output.returncode != 0:
+    subprocess.run(f"sudo vpnclient start", shell=True)
+    subprocess.run(f'echo Attempting to create VPN Adapter using the name: {adapter_name}', shell=True)
+    output = subprocess.run(f'sudo vpncmd /client localhost /client niccreate {adapter_name}', shell=True, capture_output=True)
+    
+    if output.returncode == 0:
+        subprocess.run(f'echo Successfully created VPN Adapter', shell=True)
+
+        subprocess.run(f'echo Writting name to settings', shell=True)
         settings_file["vpn_name"] = adapter_name 
         json_obj = json.dumps(settings_file, indent=5)
         with open("libs/settings.json", "w") as outfile:
             outfile.write(json_obj)
     else:
-        print(f"The operation failed with the following error : {output.stdout.decode()}")
+        subprocess.run(f'echo The operation failed with the following error : {output.stdout.decode()}', shell=True)
+        # print(f"The operation failed with the following error : {output.stdout.decode()}")
 else:
-    print("There is already a vpn created")
+    subprocess.run(f"echo There is a vpn created already")
