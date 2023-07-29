@@ -19,10 +19,10 @@ if adapter_name != "" and adapter_name != settings_file["vpn_name"]:
         subprocess.run(f'echo Writting name to settings', shell=True)
         settings_file["vpn_name"] = adapter_name 
         json_obj = json.dumps(settings_file, indent=5)
+        subprocess.run(f"echo Saving vpn name to settings file")
         with open("libs/settings.json", "w") as outfile:
             outfile.write(json_obj)
     else:
-        subprocess.run(f'echo The operation failed with the following error : {output.stdout.decode()}', shell=True)
-        # print(f"The operation failed with the following error : {output.stdout.decode()}")
+        subprocess.run(f"echo The operation failed with the following error : {output.stdout.decode()}")
 else:
-    subprocess.run(f"echo There is a vpn created already")
+    subprocess.run(f"VPN Adapter name already existent", shell=True )
