@@ -56,31 +56,24 @@ class Main(customtkinter.CTk):
 
 # TODO Check correct network credentials for the vpn 
     def connect(self):
-        if(subprocess.run(f"ip a|grep vpn", shell=True)==""):
-            print("vpn adapter not created")
-            subprocess.run(f"vpncmd /client localhost /cmd niccreate vpn")
-            # subprocess.run(f"") 
-        else:
-            print("vpn adapter already created")
+        account = setting_file["acc"]
+        vpn = setting_file["vpn_ip"]
+        password = setting_file["pw"]
+        # not functional
+        subprocess.run(f"vpncmd /CLIENT localhost /CMD AccountCreate {account}", shell=True)
+        subprocess.run(f"vpncmd /CLIENT localhost /CMD AccountPassword {password}", shell=True)
 
-            account = setting_file["acc"]
-            vpn = setting_file["vpn_ip"]
-            password = setting_file["pw"]
-            # not functional
-            subprocess.run(f"vpncmd /CLIENT localhost /CMD AccountCreate {account}", shell=True)
-            subprocess.run(f"vpncmd /CLIENT localhost /CMD AccountPassword {password}", shell=True)
+        # TODO 
+        # If connection is accepted then write creds to json.
+        # Else display error message window
 
-            # TODO 
-            # If connection is accepted then write creds to json.
-            # Else display error message window
+        setting_file["acc"] = account
+        setting_file["vpn-id"] = vpn
+        json_obj = json.dumps(setting_file, indent=5)
 
-            setting_file["acc"] = account
-            setting_file["vpn-id"] = vpn
-            json_obj = json.dumps(setting_file, indent=5)
-            with open("libs/settings.json", "w") as outfile:
-                outfile.write(json_obj)
+        with open("libs/settings.json", "w") as outfile:
+            outfile.write(json_obj)
 
-            pass
     def connections_list_callback(self):
         pass
     
@@ -113,14 +106,12 @@ class Main(customtkinter.CTk):
         self.connections_list.set(setting_file["connection_name"])
         self.connections_list.grid(row=0, column=1, padx=20, pady=20, sticky="ew")
        
-        # self.disconnected_img = customtkinter.CTkImage(dark_image="/img/online.png", light_image="/img/online.png", size=(10,10))
         self.status_label = customtkinter.CTkLabel(self.top_frame, text="Status")
         self.status_label.grid(row=1, column=0, padx=20, pady=20, sticky="w")
 
         self.create_connection_btn = customtkinter.CTkButton(self.top_frame, text="Create Connection", state=self.get_connection_btn_state(), command=self.create_connection_window)
         self.create_connection_btn.grid(row=1, column=1, padx=20, pady=20, sticky="ew")
  
-        # self.bottom_frame.grid_columnconfigure(0, weight=1)
         self.bottom_frame.grid_columnconfigure(2, weight=2)
         self.bottom_frame.grid_rowconfigure(0, weight=1)
 
