@@ -38,5 +38,5 @@ class Connection(customtkinter.CTkToplevel):
         self.vpn = customtkinter.CTkEntry(self, placeholder_text="VPN IP")
         self.vpn.grid(row=3,column=0, padx=20, pady=20, sticky="ew" )
 
-        self.create_con_btn = customtkinter.CTkButton(self, text="Create",state="enabled", command=self.create_connection())
+        self.create_con_btn = customtkinter.CTkButton(self, text="Create",state="enabled", command=self.create_connection)
         self.create_con_btn.grid(row=4, column=0, padx=20, pady=20, sticky="ew")
