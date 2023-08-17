@@ -10,12 +10,22 @@ class Connection(customtkinter.CTkToplevel):
 
     def create_connection(self):
         vpn_name :str  = settings_file["vpn_name"]
+        conn : dict = {
+            "account":"",
+            "password":"",
+            "connection_name":"",
+            "vpn_ip":""
+            }
 
-        subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.account.get()}", shell=True)
-        subprocess.run(f"vpncmd /client localhost /cmd accountPassword {self.password.get()}", shell=True) 
+        conn["account"] = self.account.get()
+        conn["connection_name"] = self.connection_name.get()
+        conn["password"] = self.password.get()
+        conn["vpn_ip"] = self.vpn.get()
+        # subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.account.get()}", shell=True)
+        # subprocess.run(f"vpncmd /client localhost /cmd accountPassword {self.password.get()}", shell=True) 
         # TODO look into the following command
         # TODO use this full command instead of above one. AccountCreate represents the connection name
-        subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.connection_name} /server {self.vpn} /username {self.account} /nicname {settings_file.get('nic')}", shell=True)
+        subprocess.run(f"vpncmd /client localhost /cmd accountcreate {conn['connection_name']} /server {conn['vpn_ip']} /username {conn['account']} /nicname {settings_file.get('nic')}", shell=True)
 
     def __init__(self):
         super().__init__()

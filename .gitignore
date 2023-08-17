@@ -2,3 +2,5 @@ __pycache__
 output.txt
 logs.txt
 make_adapter.py
+vpn.build
+vpn.bin
