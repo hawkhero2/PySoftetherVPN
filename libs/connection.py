@@ -10,22 +10,17 @@ class Connection(customtkinter.CTkToplevel):
 
     def create_connection(self):
         vpn_name :str  = settings_file["vpn_name"]
-        conn : dict = {
-            "account":"",
-            "password":"",
-            "connection_name":"",
-            "vpn_ip":""
-            }
-
-        conn["account"] = self.account.get()
-        conn["connection_name"] = self.connection_name.get()
-        conn["password"] = self.password.get()
-        conn["vpn_ip"] = self.vpn.get()
         # subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.account.get()}", shell=True)
         # subprocess.run(f"vpncmd /client localhost /cmd accountPassword {self.password.get()}", shell=True) 
         # TODO look into the following command
         # TODO use this full command instead of above one. AccountCreate represents the connection name
-        subprocess.run(f"vpncmd /client localhost /cmd accountcreate {conn['connection_name']} /server {conn['vpn_ip']} /username {conn['account']} /nicname {settings_file.get('nic')}", shell=True)
+        if(self.connection_name.get() is not "" and self.account.get() is not "" and self.password.get() is not "" and self.vpn.get() is not ""):
+            subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.connection_name.get()} /server {self.vpn.get()}/username {self.account.get()}/nicname {settings_file.get('nic')}", shell=True)
+        else:
+            msg_window = customtkinter.CTkToplevel()
+            msg_window.title("Error")
+            msg_window.geometry("300x150")
+            msg_window.resizable(False, False)
 
     def __init__(self):
         super().__init__()
