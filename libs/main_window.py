@@ -121,8 +121,8 @@ class Main(customtkinter.CTk):
         self.str_output : str = str(self.output.stdout)
         self.check_conn_status = self.str_output.splitlines()
 
-        self.connect_btn = customtkinter.CTkButton(self.bottom_frame, text="Connect", state="enabled",command=self.connect)
+        self.connect_btn = customtkinter.CTkButton(self.bottom_frame, text="Connect", state="enabled",command=self.connect, width=160)
         self.connect_btn.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
 
-        self.disconnect_btn = customtkinter.CTkButton(self.bottom_frame, text="Disconnect", state="disabled", command=self.disconnect)
+        self.disconnect_btn = customtkinter.CTkButton(self.bottom_frame, text="Disconnect", state="disabled", command=self.disconnect, width=160)
         self.disconnect_btn.grid(row=3, column=1, padx=20, pady=20, sticky="ew")

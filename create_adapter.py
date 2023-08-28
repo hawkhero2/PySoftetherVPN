@@ -19,7 +19,7 @@ if adapter_name != "" and adapter_name != settings_file["vpn_name"]:
         settings_file["vpn_name"] = adapter_name 
         json_obj = json.dumps(settings_file, indent=5)
 
-        subprocess.run(f"echo Saving vpn name to settings file")
+        subprocess.run(f"echo Saving vpn name to settings file", shell=True)
         with open("libs/settings.json", "w") as outfile:
             outfile.write(json_obj)
 
