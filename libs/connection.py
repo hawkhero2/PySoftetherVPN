@@ -10,15 +10,20 @@ class Connection(customtkinter.CTkToplevel):
 
     def create_connection(self):
         vpn_name :str  = settings_file["vpn_name"]
-        # subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.account.get()}", shell=True)
-        # subprocess.run(f"vpncmd /client localhost /cmd accountPassword {self.password.get()}", shell=True) 
-        # TODO look into the following command
-        # TODO use this full command instead of above one. AccountCreate represents the connection name
+        inputs = [
+            "2\n",
+            "localhost\n",
+            "accountcreate\n",
+            self.connection_name.get()+"\n",
+            self.vpn.get()+"\n",
+            self.connection_name.get()+"\n",
+            self.account.get()+"\n",
+            vpn_name+"\n"
+            ]
 
         if(self.connection_name.get() != "" and self.account.get() !="" and self.password.get() != "" and self.vpn.get() !=""):
-            #  TODO split command into multiple inputs to terminal
-            
-            subprocess.run(f"vpncmd /client localhost /cmd accountcreate {self.connection_name.get()} /server {self.vpn.get()} /username {self.account.get()} /nicname {settings_file.get('vpn_name')}", shell=True)
+            command = subprocess.Popen(["vpncmd"], shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE, text=True)
+
         else:
             def msg_window_close():
                 msg_window.destroy()

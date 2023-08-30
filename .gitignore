@@ -5,3 +5,4 @@ make_adapter.py
 vpn.build
 vpn.bin
 testing.py
+list_acc.py
