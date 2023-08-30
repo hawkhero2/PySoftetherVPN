@@ -6,6 +6,15 @@ import customtkinter
 settings_file:dict = json.load(open("libs/settings.json"))
 window_size = settings_file.get("window_size")
 
+class MsgBox(customtkinter.CTkToplevel):
+    def __init__(self, args):
+        super().__init__(args)
+        self.title("")
+        self.geometry("250x150")
+        self.resizable(False,False)
+
+        self.msg_label = customtkinter.CTkLabel(self,text=args)
+
 class Connection(customtkinter.CTkToplevel):
 
     def create_connection(self):
@@ -23,14 +32,19 @@ class Connection(customtkinter.CTkToplevel):
 
         if(self.connection_name.get() != "" and self.account.get() !="" and self.password.get() != "" and self.vpn.get() !=""):
             command = subprocess.Popen(["vpncmd"], shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE, text=True)
-
+            for value in inputs:
+                command.stdin.write(value)
+                command.stdin.flush()
+            
+         
+                
         else:
             def msg_window_close():
                 msg_window.destroy()
 
             msg_window = customtkinter.CTkToplevel()
             msg_window.title("Error")
-            msg_window.geometry("300x150")
+            msg_window.geometry("250x150")
             msg_window.resizable(False, False)
             msg_txt = customtkinter.CTkLabel(msg_window, text="Fill in the forms")
             msg_ok = customtkinter.CTkButton(msg_window, state="enabled", text="OK", command=msg_window_close)
