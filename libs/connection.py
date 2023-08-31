@@ -1,19 +1,12 @@
 #!/usr/bin/env python3
+
 import json
 import subprocess
 import customtkinter
+from msg_box import MsgBox
 
 settings_file:dict = json.load(open("libs/settings.json"))
 window_size = settings_file.get("window_size")
-
-class MsgBox(customtkinter.CTkToplevel):
-    def __init__(self, args):
-        super().__init__(args)
-        self.title("")
-        self.geometry("250x150")
-        self.resizable(False,False)
-
-        self.msg_label = customtkinter.CTkLabel(self,text=args)
 
 class Connection(customtkinter.CTkToplevel):
 
@@ -29,27 +22,23 @@ class Connection(customtkinter.CTkToplevel):
             self.account.get()+"\n",
             vpn_name+"\n"
             ]
+        pw_inputs = [
+            self.connection_name.get()+"\n",
+            self.password.get()+"\n",
+            self.password.get()+"\n",
+            "standard\n"
+            ]
 
         if(self.connection_name.get() != "" and self.account.get() !="" and self.password.get() != "" and self.vpn.get() !=""):
             command = subprocess.Popen(["vpncmd"], shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE, text=True)
             for value in inputs:
                 command.stdin.write(value)
                 command.stdin.flush()
+            msg_window = MsgBox("Connection successfully created.")
+            self.destroy()
             
-         
-                
         else:
-            def msg_window_close():
-                msg_window.destroy()
-
-            msg_window = customtkinter.CTkToplevel()
-            msg_window.title("Error")
-            msg_window.geometry("250x150")
-            msg_window.resizable(False, False)
-            msg_txt = customtkinter.CTkLabel(msg_window, text="Fill in the forms")
-            msg_ok = customtkinter.CTkButton(msg_window, state="enabled", text="OK", command=msg_window_close)
-            msg_txt.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
-            msg_ok.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+            msg_window = MsgBox(msg="Fill in all the fields")
 
     def __init__(self):
         super().__init__()
