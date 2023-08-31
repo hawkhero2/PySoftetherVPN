@@ -22,7 +22,11 @@ class Connection(customtkinter.CTkToplevel):
             self.account.get()+"\n",
             vpn_name+"\n"
             ]
+
         pw_inputs = [
+            "2\n",
+            "localhost\n",
+            "accountpasswordset\n",
             self.connection_name.get()+"\n",
             self.password.get()+"\n",
             self.password.get()+"\n",
@@ -34,6 +38,12 @@ class Connection(customtkinter.CTkToplevel):
             for value in inputs:
                 command.stdin.write(value)
                 command.stdin.flush()
+
+            pw_command = subprocess.Popen(["vpncmd"], shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE, text=True)
+            for value in pw_inputs:
+                pw_command.stdin.write(value)
+                pw_command.stdin.flush()
+            
             msg_window = MsgBox("Connection successfully created.")
             self.destroy()
             
