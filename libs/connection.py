@@ -3,7 +3,7 @@
 import json
 import subprocess
 import customtkinter
-from msg_box import MsgBox
+from libs.msg_box import MsgBox
 
 settings_file:dict = json.load(open("libs/settings.json"))
 window_size = settings_file.get("window_size")
@@ -44,9 +44,21 @@ class Connection(customtkinter.CTkToplevel):
                 pw_command.stdin.write(value)
                 pw_command.stdin.flush()
             
-            msg_window = MsgBox("Connection successfully created.")
-            self.destroy()
-            
+            if(pw_command.stderr ==0):
+                msg_window = MsgBox("Connection successfully created.")
+                self.destroy()
+                
+                settings_file["connection_name"]=self.connection_name.get()
+                settings_file["acc"]=self.account.get()
+                settings_file["pw"]=self.password.get()
+                settings_file["vpn_ip"]=self.vpn.get()
+                
+                json_dump = json.dump(settings_file, indent=5)
+
+                with open("libs/settings.json", "w") as outfile:
+                    outfile.write(json_dump)
+            else:
+                msg_window = MsgBox(pw_command.stderr)
         else:
             msg_window = MsgBox(msg="Fill in all the fields")
 
