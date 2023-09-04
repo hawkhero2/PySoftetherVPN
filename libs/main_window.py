@@ -23,8 +23,19 @@ class Main(customtkinter.CTk):
     def get_vpn_connection_status(self):
         # this should give status of all the exisiting connections
         output = subprocess.run("vpnclient /client localhost /cmd accountlist", shell=True, capture_output=True)
-        pass
-    
+        output = output.stdout.decode().splitlines()
+
+        status_pos = 0
+        index = 0
+        for line in output:
+            if(line.__contains__("Status")):
+                status_pos = index
+            else:
+               index = index+1 
+
+        if(output[status_pos].split("|")[1] != ""):
+            self.status_label = output[status_pos].split("|")[1]
+
     def get_connection_btn_state(self):
         state=""
         if setting_file["connection_name"] == "":
