@@ -59,31 +59,30 @@ class Main(customtkinter.CTk):
  
 
     def disconnect(self):
-        if(subprocess.run(f"ip a|grep vpn", shell=True)==""):
-            print("vpn adapter not created")
-            # subprocess.run(f"") 
-        else:
-            print("vpn adapter already created")
+        pass
 
-# TODO Check correct network credentials for the vpn 
     def connect(self):
-        account = setting_file["acc"]
-        vpn = setting_file["vpn_ip"]
-        password = setting_file["pw"]
-        # not functional
-        subprocess.run(f"vpncmd /CLIENT localhost /CMD AccountCreate {account}", shell=True)
-        subprocess.run(f"vpncmd /CLIENT localhost /CMD AccountPassword {password}", shell=True)
+        setting_file :dict = json.load(open("libs/settings.json"))
+        output = subprocess.run(f"vpncmd /client localhost /cmd accountconnect {setting_file['connection_name']}", shell=True, capture_output=True)
+        return_code = output.returncode
 
-        # TODO 
-        # If connection is accepted then write creds to json.
-        # Else display error message window
-
-        setting_file["acc"] = account
-        setting_file["vpn-id"] = vpn
-        json_obj = json.dumps(setting_file, indent=5)
-
-        with open("libs/settings.json", "w") as outfile:
-            outfile.write(json_obj)
+        if(output.returncode == 0):
+            msg_window = MsgBox("Connection successfull") 
+            json_obj = json.dumps(setting_file, indent=5)
+            with open("libs/settings.json", "w") as outfile:
+                outfile.write(json_obj)
+        else:
+            outputArray = output.stdout.decode().splitlines()
+            log_error =""
+            index = 0
+            for line in outputArray:
+                if(line.__contains__("Error Code")):
+                   log_error = line[index+1]
+                else:
+                   index=index+1
+            msg_window = MsgBox("Connection failed. Check logs.")
+            with open("/logs.txt","w") as logsfile:
+                logsfile.write(log_error)
 
     def connections_list_callback(self):
         pass

@@ -35,30 +35,58 @@ class Connection(customtkinter.CTkToplevel):
 
         if(self.connection_name.get() != "" and self.account.get() !="" and self.password.get() != "" and self.vpn.get() !=""):
             command = subprocess.Popen(["vpncmd"], shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE, text=True)
+
             for value in inputs:
                 command.stdin.write(value)
                 command.stdin.flush()
-
-            pw_command = subprocess.Popen(["vpncmd"], shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE, text=True)
-            for value in pw_inputs:
-                pw_command.stdin.write(value)
-                pw_command.stdin.flush()
             
-            if(pw_command.stderr ==0):
-                msg_window = MsgBox("Connection successfully created.")
-                self.destroy()
-                
-                settings_file["connection_name"]=self.connection_name.get()
-                settings_file["acc"]=self.account.get()
-                settings_file["pw"]=self.password.get()
-                settings_file["vpn_ip"]=self.vpn.get()
-                
-                json_dump = json.dump(settings_file, indent=5)
+            out, err = command.communicate()
+            error = ("","")
+            out = out.splitlines()
+            index=0
+            for line in out:
+                if(line.__contains__("Error code")):
+                    error[0] = out[index]              
+                    error[1] = out[index+1]
+                else:
+                    index=index+1
 
-                with open("libs/settings.json", "w") as outfile:
-                    outfile.write(json_dump)
+            if(error[0] == ""):
+                pw_command = subprocess.Popen(["vpncmd"], shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE, text=True)
+
+                for value in pw_inputs:
+                    pw_command.stdin.write(value)
+                    pw_command.stdin.flush()
+                
+                out, err = pw_command.communicate()
+                error = ("", "")
+                index=0
+                for line in out:
+                    if(line.__contains__("Error code")):
+                        error[0] = out[index]
+                        error[1] = out[index+1]
+                    else:
+                        index=index+1
+
+                if(error[0] == ""):
+                    msg_window = MsgBox("Connection successfully created.")
+                    self.destroy()
+                    
+                    settings_file["connection_name"]=self.connection_name.get()
+                    settings_file["acc"]=self.account.get()
+                    settings_file["pw"]=self.password.get()
+                    settings_file["vpn_ip"]=self.vpn.get()
+                    
+                    json_dump = json.dump(settings_file, indent=5)
+
+                    with open("libs/settings.json", "w") as outfile:
+                        outfile.write(json_dump)
+                else:
+                    msg_window = MsgBox(error[1])
+                    with open("/logs.txt", "w") as outfile:
+                        outfile.write(error[1])
             else:
-                msg_window = MsgBox(pw_command.stderr)
+                msg_window = MsgBox(error[1])
         else:
             msg_window = MsgBox(msg="Fill in all the fields")
 
