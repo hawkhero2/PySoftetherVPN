@@ -7,9 +7,14 @@ from libs.main_window import Main
 # TODO check for session token connection ( maybe refresh token)
 
 # run command to start softether vpn, vpnclient start
-output = subprocess.run("vpnclient stop", shell=True, capture_output=True)
-if output.stdout.decode().splitlines()[0] == "SoftEther VPN Client service has not yet been started.":
+
+output = subprocess.run("vpnclient start", shell=True, capture_output=True)
+if(output.stdout.splitlines()[0]=="SoftEther VPN Client service has been already started."):
+    subprocess.run("vpnclient stop", shell=True)
     subprocess.run("vpnclient start", shell=True)
+# output = subprocess.run("vpnclient stop", shell=True, capture_output=True)
+# if output.stdout.decode().splitlines()[0] == "SoftEther VPN Client service has not yet been started.":
+#     subprocess.run("vpnclient start", shell=True)
 # output = subprocess.run(f"ip a | grep vpn", shell=True, capture_output=True)
 # if output.returncode == 0:
 #     print(output.stdout.decode())
@@ -33,3 +38,4 @@ main.mainloop()
 #     f.writelines(converted_output)
 # print(len(converted_output))
 # subprocess.run("vpnclient stop", shell=True)
+subprocess.run("vpnclient stop", shell=True)

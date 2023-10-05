@@ -2,7 +2,6 @@ import json
 import subprocess
 import customtkinter
 from libs.settings_window import Settings
-from libs.CTkTable import *
 from libs.connection import *
 
 setting_file : dict = json.load(open("libs/settings.json"))
@@ -64,9 +63,13 @@ class Main(customtkinter.CTk):
     def connect(self):
         setting_file :dict = json.load(open("libs/settings.json"))
         output = subprocess.run(f"vpncmd /client localhost /cmd accountconnect {setting_file['connection_name']}", shell=True, capture_output=True)
-        return_code = output.returncode
+        output_to_array = output.stdout.decode().splitlines()
+        returncode =0
+        for line in output_to_array:
+            if(line.__contains__("Error occured")):
+                returncode=line.split(":")[1]
 
-        if(output.returncode == 0):
+        if(returncode == 0):
             msg_window = MsgBox("Connection successfull") 
             json_obj = json.dumps(setting_file, indent=5)
             with open("libs/settings.json", "w") as outfile:
