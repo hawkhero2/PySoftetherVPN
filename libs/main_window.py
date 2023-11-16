@@ -10,6 +10,7 @@ window_size = setting_file.get("window_size")
 # Pentru a sterge virtual adapter comanda:
 # sudo ip link delete <adapter_name>
 class Main(customtkinter.CTk):
+# TODO Look into: https://github.com/SoftEtherVPN/SoftEtherVPN/blob/8cde81215753ad77511af43e904071b506731bc7/src/Mayaqua/Unix.c#L830
 
     def create_connection_window(self):
         if self.connection_window is None or not self.connection_window.winfo_exists():
