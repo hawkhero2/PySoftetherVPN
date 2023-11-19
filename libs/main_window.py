@@ -59,6 +59,9 @@ class Main(customtkinter.CTk):
  
 
     def disconnect(self):
+        settings_file = json.load(open("libs/settings.json"))
+        connection_name = settings_file["connection_name"]
+        subprocess.run("vpncmd /client /cmd accountdisconnect "+{connection_name}, shell=True)
         pass
 
     def connect(self):
@@ -75,6 +78,7 @@ class Main(customtkinter.CTk):
             json_obj = json.dumps(setting_file, indent=5)
             with open("libs/settings.json", "w") as outfile:
                 outfile.write(json_obj)
+            self.disconnect_btn._state = "enabled"
         else:
             outputArray = output.stdout.decode().splitlines()
             log_error =""
@@ -91,7 +95,7 @@ class Main(customtkinter.CTk):
     def connections_list_callback(self):
         pass
     
-
+#   UI
     def __init__(self):
         super().__init__()
 

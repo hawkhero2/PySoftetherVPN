@@ -90,6 +90,7 @@ class Connection(customtkinter.CTkToplevel):
         else:
             msg_window = MsgBox(msg="Fill in all the fields")
 
+#   UI
     def __init__(self):
         super().__init__()
 
