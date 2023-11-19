@@ -5,6 +5,7 @@ import subprocess
 from libs.main_window import Main
 
 # TODO check for session token connection ( maybe refresh token)
+# to run vpnclient start without error: sudo chmod -R 777 /usr/libexe/; maybe/can't remember exactly
 
 # run command to start softether vpn, vpnclient start
 
