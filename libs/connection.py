@@ -59,7 +59,7 @@ class Connection(customtkinter.CTkToplevel):
                     pw_command.stdin.flush()
                 
                 out, err = pw_command.communicate()
-                error = ("", "")
+                error = ["",""]
                 index=0
                 for line in out:
                     if(line.__contains__("Error code")):
@@ -74,7 +74,6 @@ class Connection(customtkinter.CTkToplevel):
                     
                     settings_file["connection_name"]=self.connection_name.get()
                     settings_file["acc"]=self.account.get()
-                    settings_file["pw"]=self.password.get()
                     settings_file["vpn_ip"]=self.vpn.get()
                     
                     json_dump = json.dump(settings_file, indent=5)
