@@ -47,7 +47,8 @@ class Main(customtkinter.CTk):
     # TODO https://www.youtube.com/watch?v=i2zN1IFKNYU&pp=ygUgc2V0dXAgc29mdGV0aGVyIHZwbiBjbGllbnQgbGludXg%3D
     def set_startup_conn(self):
         # not tested yet
-        subprocess.run(f"vpncmd /client accountstartupset", shell=True, capture_output=True)
+        settings_file=json.load(open("libs/settings.json"))
+        subprocess.run(f"vpncmd /client accountstartupset {settings_file}", shell=True, capture_output=True)
 
     def settings_btn(self):
         if self.settings_window is None or not self.settings_window.winfo_exists():
@@ -62,7 +63,6 @@ class Main(customtkinter.CTk):
         settings_file = json.load(open("libs/settings.json"))
         connection_name = settings_file["connection_name"]
         subprocess.run("vpncmd /client /cmd accountdisconnect "+{connection_name}, shell=True)
-        pass
 
     def connect(self):
         setting_file :dict = json.load(open("libs/settings.json"))
