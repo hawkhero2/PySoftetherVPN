@@ -1,7 +1,7 @@
 import json
 import subprocess
 import customtkinter
-from libs.settings_window import Settings
+from libs.edit_connection_window import EditConnection
 from libs.connection import *
 
 setting_file : dict = json.load(open("libs/settings.json"))
@@ -51,8 +51,8 @@ class Main(customtkinter.CTk):
         subprocess.run(f"vpncmd /client accountstartupset {settings_file}", shell=True, capture_output=True)
 
     def settings_btn(self):
-        if self.settings_window is None or not self.settings_window.winfo_exists():
-            self.settings_window = Settings()
+        if self.edit_connection_win is None or not self.edit_connection_win.winfo_exists():
+            self.settings_window = EditConnection()
             self.settings_window.focus()
         else:
             if self.settings_window.state() == "withdrawn":
@@ -133,7 +133,7 @@ class Main(customtkinter.CTk):
         self.bottom_frame.grid_columnconfigure(2, weight=2)
         self.bottom_frame.grid_rowconfigure(0, weight=1)
 
-        self.settings = customtkinter.CTkButton(self.top_frame, text="Settings", state="disabled", command=self.settings_btn)
+        self.edit_connection_btn= customtkinter.CTkButton(self.top_frame, text="Edit Connection", state="disabled", command=self.settings_btn)
 
         self.output = subprocess.run(f"vpncmd /client localhost /cmd accountlist", shell=True, capture_output=True)
         self.str_output : str = str(self.output.stdout)

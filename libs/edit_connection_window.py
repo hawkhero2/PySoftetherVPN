@@ -5,7 +5,7 @@ import customtkinter
 setting_file : dict = json.load(open("libs/settings.json"))
 window_size = setting_file.get("window_size")
 
-class Settings(customtkinter.CTkToplevel):
+class EditConnection(customtkinter.CTkToplevel):
 
     def __init__(self):
         super().__init__()
@@ -26,15 +26,6 @@ class Settings(customtkinter.CTkToplevel):
         self.connect_btn = customtkinter.CTkButton(self.bottom_frame, text="Connect", state="disabled",command=self.connect)
         self.connect_btn.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
 
-    def create_nic(self):
-        pass
 
     def save(self):
-        # print("You connected " + acc_input.get())
-        setting_file["acc"] = self.acc_input.get()
-        self.settings_file[""] = ("pw", self.pwd_input.get())
-
-        print("your login settings_file are: acc:"+
-            self.settings_file.get("acc")+
-            " with the password: "+self.settings_file.get("pw"))
-        self.withdraw()
+       self.withdraw()
