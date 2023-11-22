@@ -51,7 +51,7 @@ class Main(customtkinter.CTk):
         subprocess.run(f"vpncmd /client accountstartupset {settings_file}", shell=True, capture_output=True)
 
     def settings_btn(self):
-        if self.edit_connection_win is None or not self.edit_connection_win.winfo_exists():
+        if self.edit_connection_window is None or not self.edit_connection_win.winfo_exists():
             self.settings_window = EditConnection()
             self.settings_window.focus()
         else:

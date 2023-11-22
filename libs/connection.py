@@ -41,7 +41,7 @@ class Connection(customtkinter.CTkToplevel):
                 command.stdin.flush()
             
             out, err = command.communicate()
-            error = ("","")
+            error =["",""]
             out = out.splitlines()
             index=0
             for line in out:
@@ -70,19 +70,20 @@ class Connection(customtkinter.CTkToplevel):
 
                 if(error[0] == ""):
                     msg_window = MsgBox("Connection successfully created.")
-                    self.destroy()
+                    self.withdraw()
+                    # self.destroy()
                     
                     settings_file["connection_name"]=self.connection_name.get()
                     settings_file["acc"]=self.account.get()
                     settings_file["vpn_ip"]=self.vpn.get()
                     
-                    json_dump = json.dump(settings_file, indent=5)
+                    json_dump = json.dumps(settings_file, indent=5)
 
                     with open("libs/settings.json", "w") as outfile:
                         outfile.write(json_dump)
                 else:
                     msg_window = MsgBox(error[1])
-                    with open("/logs.txt", "w") as outfile:
+                    with open("logs.txt", "w") as outfile:
                         outfile.write(error[1])
             else:
                 msg_window = MsgBox(error[1])
