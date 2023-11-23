@@ -50,8 +50,8 @@ class Main(customtkinter.CTk):
         settings_file=json.load(open("libs/settings.json"))
         subprocess.run(f"vpncmd /client accountstartupset {settings_file}", shell=True, capture_output=True)
 
-    def settings_btn(self):
-        if self.edit_connection_window is None or not self.edit_connection_win.winfo_exists():
+    def edit_connection(self):
+        if self.edit_connection_window is None or not self.edit_connection_window.winfo_exists():
             self.settings_window = EditConnection()
             self.settings_window.focus()
         else:
@@ -93,7 +93,7 @@ class Main(customtkinter.CTk):
             else:
                 index=index+1
 
-        if(error[0] ==""):
+        
             msg_window = MsgBox("Connection successfull") 
             json_obj = json.dumps(setting_file, indent=5)
             with open("libs/settings.json", "w") as outfile:
@@ -129,7 +129,7 @@ class Main(customtkinter.CTk):
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        self.settings_window : customtkinter.CTkToplevel = None
+        self.edit_connection_window: customtkinter.CTkToplevel = None
         self.connection_window :customtkinter.CTkToplevel = None
         
         self.top_frame.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
@@ -150,10 +150,13 @@ class Main(customtkinter.CTk):
         self.create_connection_btn = customtkinter.CTkButton(self.top_frame, text="Create Connection", state=self.get_connection_btn_state(), command=self.create_connection_window)
         self.create_connection_btn.grid(row=1, column=1, padx=20, pady=20, sticky="ew")
  
+        self.edit_connection_btn = customtkinter.CTkButton(self.top_frame, text="Edit Connection", command=self.edit_connection)
+        self.edit_connection_btn.grid(row=2, column=1, padx=20, pady=20, sticky="ew")
+
         self.bottom_frame.grid_columnconfigure(2, weight=2)
         self.bottom_frame.grid_rowconfigure(0, weight=1)
 
-        self.edit_connection_btn= customtkinter.CTkButton(self.top_frame, text="Edit Connection", state="disabled", command=self.settings_btn)
+        self.edit_connection_btn= customtkinter.CTkButton(self.top_frame, text="Edit Connection", state="disabled", command=self.edit_connection)
 
         self.output = subprocess.run(f"vpncmd /client localhost /cmd accountlist", shell=True, capture_output=True)
         self.str_output : str = str(self.output.stdout)

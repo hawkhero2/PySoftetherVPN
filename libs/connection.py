@@ -3,6 +3,7 @@
 import json
 import subprocess
 import customtkinter
+from libs.error_handle import has_error
 from libs.msg_box import MsgBox
 
 settings_file:dict = json.load(open("libs/settings.json"))
@@ -43,15 +44,15 @@ class Connection(customtkinter.CTkToplevel):
             out, err = command.communicate()
             error =["",""]
             out = out.splitlines()
-            index=0
-            for line in out:
-                if(line.__contains__("Error code")):
-                    error[0] = out[index]              
-                    error[1] = out[index+1]
-                else:
-                    index=index+1
+            # index=0
+            # for line in out:
+            #     if(line.__contains__("Error code")):
+            #         error[0] = out[index]              
+            #         error[1] = out[index+1]
+            #     else:
+            #         index=index+1
 
-            if(error[0] == ""):
+            if(has_error(out)[0] == False):
                 pw_command = subprocess.Popen(["vpncmd"], shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE, text=True)
 
                 for value in pw_inputs:
@@ -59,16 +60,17 @@ class Connection(customtkinter.CTkToplevel):
                     pw_command.stdin.flush()
                 
                 out, err = pw_command.communicate()
-                error = ["",""]
-                index=0
-                for line in out:
-                    if(line.__contains__("Error code")):
-                        error[0] = out[index]
-                        error[1] = out[index+1]
-                    else:
-                        index=index+1
+                out = out.splitlines()
+                # error = ["",""]
+                # index=0
+                # for line in out:
+                #     if(line.__contains__("Error code")):
+                #         error[0] = out[index]
+                #         error[1] = out[index+1]
+                #     else:
+                #         index=index+1
 
-                if(error[0] == ""):
+                if(has_error(out)[0] == False):
                     msg_window = MsgBox("Connection successfully created.")
                     self.withdraw()
                     # self.destroy()
