@@ -64,16 +64,36 @@ class Main(customtkinter.CTk):
         connection_name = settings_file["connection_name"]
         subprocess.run("vpncmd /client /cmd accountdisconnect "+{connection_name}, shell=True)
 
+    # WIP execution bash cmds + error capturing
+    # def exec_cmd(cmd):
+    # TODO Do proper return type for variables
+    #     output = subprocess.run(cmd, shell=True, capture_output=True)
+    #     err=["",""]
+        
+    #     if(type(cmd)==str):
+
+    #         pass
+    #     if(type(cmd)==list):
+    #         pass
+
+
+        # return err
+
     def connect(self):
         setting_file :dict = json.load(open("libs/settings.json"))
         output = subprocess.run(f"vpncmd /client localhost /cmd accountconnect {setting_file['connection_name']}", shell=True, capture_output=True)
-        output_to_array = output.stdout.decode().splitlines()
-        returncode =0
-        for line in output_to_array:
-            if(line.__contains__("Error occured")):
-                returncode=line.split(":")[1]
 
-        if(returncode == 0):
+        out= output.stdout.decode().splitlines()
+        error=["",""]
+        index=0
+        for line in out:
+            if(line.__contains__("Error occured")):
+                error[0]=out[index]
+                error[1]=out[index+1]
+            else:
+                index=index+1
+
+        if(error[0] ==""):
             msg_window = MsgBox("Connection successfull") 
             json_obj = json.dumps(setting_file, indent=5)
             with open("libs/settings.json", "w") as outfile:
@@ -115,7 +135,7 @@ class Main(customtkinter.CTk):
         self.top_frame.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
         self.bottom_frame.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
         self.top_frame.grid_columnconfigure(0, weight=1)
-
+ 
         self.connections_label = customtkinter.CTkLabel(self.top_frame, text="Connections")
         self.connections_label.grid(row=0, column=0, padx=20, pady=20, sticky="w")
 
@@ -138,7 +158,7 @@ class Main(customtkinter.CTk):
         self.output = subprocess.run(f"vpncmd /client localhost /cmd accountlist", shell=True, capture_output=True)
         self.str_output : str = str(self.output.stdout)
         self.check_conn_status = self.str_output.splitlines()
-
+ 
         self.connect_btn = customtkinter.CTkButton(self.bottom_frame, text="Connect", state="enabled",command=self.connect, width=160)
         self.connect_btn.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
 
