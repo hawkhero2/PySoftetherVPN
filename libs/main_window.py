@@ -64,53 +64,36 @@ class Main(customtkinter.CTk):
         connection_name = settings_file["connection_name"]
         subprocess.run("vpncmd /client /cmd accountdisconnect "+{connection_name}, shell=True)
 
-    # WIP execution bash cmds + error capturing
-    # def exec_cmd(cmd):
-    # TODO Do proper return type for variables
-    #     output = subprocess.run(cmd, shell=True, capture_output=True)
-    #     err=["",""]
-        
-    #     if(type(cmd)==str):
-
-    #         pass
-    #     if(type(cmd)==list):
-    #         pass
-
-
-        # return err
-
     def connect(self):
         setting_file :dict = json.load(open("libs/settings.json"))
         output = subprocess.run(f"vpncmd /client localhost /cmd accountconnect {setting_file['connection_name']}", shell=True, capture_output=True)
 
-        out= output.stdout.decode().splitlines()
-        error=["",""]
-        index=0
-        for line in out:
-            if(line.__contains__("Error occured")):
-                error[0]=out[index]
-                error[1]=out[index+1]
-            else:
-                index=index+1
+        # TODO Refactor this
+        output = output.stdout.decode().splitlines()
 
-        
+        if(has_error(output)==False):               
             msg_window = MsgBox("Connection successfull") 
-            json_obj = json.dumps(setting_file, indent=5)
-            with open("libs/settings.json", "w") as outfile:
-                outfile.write(json_obj)
+            # json_obj = json.dumps(setting_file, indent=5)
+            # with open("libs/settings.json", "w") as outfile:
+            #     outfile.write(json_obj)
             self.disconnect_btn._state = "enabled"
         else:
-            outputArray = output.stdout.decode().splitlines()
-            log_error =""
-            index = 0
-            for line in outputArray:
-                if(line.__contains__("Error Code")):
-                   log_error = line[index+1]
-                else:
-                   index=index+1
+            error = get_error(output)
             msg_window = MsgBox("Connection failed. Check logs.")
-            with open("/logs.txt","w") as logsfile:
-                logsfile.write(log_error)
+            with open("logs.txt", "a") as logsfile:
+                logsfile.write(error)
+
+        #     outputArray = output.stdout.decode().splitlines()
+        #     log_error =""
+        #     index = 0
+        #     for line in outputArray:
+        #         if(line.__contains__("Error Code")):
+        #            log_error = line[index+1]
+        #         else:
+        #            index=index+1
+        #     msg_window = MsgBox("Connection failed. Check logs.")
+        #     with open("/logs.txt","w") as logsfile:
+        #         logsfile.write(log_error)
 
     def connections_list_callback(self):
         pass

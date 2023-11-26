@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-def has_error(input :list) ->list:
+def has_error(input :list) ->bool:
     """Check if error is empty string
 
     Args:
@@ -9,14 +9,33 @@ def has_error(input :list) ->list:
     Returns:
         bool: True if error is empty string
     """
-    result= [False,"", ""]
+    result= False
     
     for line in input:
         index=0
         if(line.__contains__("Error code")):
-            result[0] = True
-            result[1] = input[index]
-            result[2] = input[index+1]
+            result = True
+            break
+        else:
+            index=index+1
+
+    return result
+
+def get_error(input:list) ->str:
+    """Get error message
+
+    Args:
+        input (list): Input list of strings
+
+    Returns:
+        str: Error message
+    """
+    result = ""
+
+    for line in input:
+        index=0
+        if(line.__contains__("Error code")):
+            result=input.index(line)+1
             break
         else:
             index=index+1

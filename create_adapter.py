@@ -32,7 +32,7 @@ if adapter_name != "" and adapter_name != settings_file["vpn_name"]:
         settings_file["vpn_name"] = adapter_name 
         json_obj = json.dumps(settings_file, indent=5)
 
-        with open("libs/settings.json", "w") as outfile:
+        with open("libs/settings.json", "a") as outfile:
             outfile.write(json_obj)
         subprocess.run(f"echo VPN Adapter {adapter_name} successfully created", shell=True)
         print("VPN Adapter name saved to libs/settings.json")
