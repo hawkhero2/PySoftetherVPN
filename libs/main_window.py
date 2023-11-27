@@ -19,9 +19,17 @@ class Main(customtkinter.CTk):
         else:
             if self.connection_window.state() == "withdrawn":
                 self.connection_window.deiconify()
+    
+    def get_edit_btn_state(self)->str:
+        state=""
+        settings_file=json.load(open("libs/settings.json"))
+        if settings_file["connection_name"] == "":
+            state = "disabled"
+        else:
+            state = "enabled"
+        return state
 
     def get_vpn_connection_status(self):
-        # this should give status of all the exisiting connections
         output = subprocess.run("vpnclient /client localhost /cmd accountlist", shell=True, capture_output=True)
         output = output.stdout.decode().splitlines()
 
@@ -62,7 +70,7 @@ class Main(customtkinter.CTk):
     def disconnect(self):
         settings_file = json.load(open("libs/settings.json"))
         connection_name = settings_file["connection_name"]
-        subprocess.run("vpncmd /client /cmd accountdisconnect "+{connection_name}, shell=True)
+        subprocess.run(f"vpncmd /client /cmd accountdisconnect {connection_name}", shell=True)
 
     def connect(self):
         setting_file :dict = json.load(open("libs/settings.json"))
@@ -71,29 +79,13 @@ class Main(customtkinter.CTk):
         # TODO Refactor this
         output = output.stdout.decode().splitlines()
 
-        if(has_error(output)==False):               
+        if(has_error(output)==False):
             msg_window = MsgBox("Connection successfull") 
-            # json_obj = json.dumps(setting_file, indent=5)
-            # with open("libs/settings.json", "w") as outfile:
-            #     outfile.write(json_obj)
             self.disconnect_btn._state = "enabled"
         else:
-            error = get_error(output)
             msg_window = MsgBox("Connection failed. Check logs.")
             with open("logs.txt", "a") as logsfile:
-                logsfile.write(error)
-
-        #     outputArray = output.stdout.decode().splitlines()
-        #     log_error =""
-        #     index = 0
-        #     for line in outputArray:
-        #         if(line.__contains__("Error Code")):
-        #            log_error = line[index+1]
-        #         else:
-        #            index=index+1
-        #     msg_window = MsgBox("Connection failed. Check logs.")
-        #     with open("/logs.txt","w") as logsfile:
-        #         logsfile.write(log_error)
+                logsfile.write(get_error(output))
 
     def connections_list_callback(self):
         pass
@@ -133,13 +125,13 @@ class Main(customtkinter.CTk):
         self.create_connection_btn = customtkinter.CTkButton(self.top_frame, text="Create Connection", state=self.get_connection_btn_state(), command=self.create_connection_window)
         self.create_connection_btn.grid(row=1, column=1, padx=20, pady=20, sticky="ew")
  
-        self.edit_connection_btn = customtkinter.CTkButton(self.top_frame, text="Edit Connection", command=self.edit_connection)
+        self.edit_connection_btn = customtkinter.CTkButton(self.top_frame, state=f"", text="Edit Connection", command=self.edit_connection)
         self.edit_connection_btn.grid(row=2, column=1, padx=20, pady=20, sticky="ew")
 
         self.bottom_frame.grid_columnconfigure(2, weight=2)
         self.bottom_frame.grid_rowconfigure(0, weight=1)
 
-        self.edit_connection_btn= customtkinter.CTkButton(self.top_frame, text="Edit Connection", state="disabled", command=self.edit_connection)
+        self.edit_connection_btn= customtkinter.CTkButton(self.top_frame, text="Edit Connection", state=f"{self.get_edit_btn_state()}", command=self.edit_connection)
 
         self.output = subprocess.run(f"vpncmd /client localhost /cmd accountlist", shell=True, capture_output=True)
         self.str_output : str = str(self.output.stdout)
