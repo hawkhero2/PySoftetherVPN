@@ -3,10 +3,6 @@ import subprocess
 import customtkinter
 from libs.edit_connection_window import EditConnection
 from libs.connection import *
-
-setting_file : dict = json.load(open("libs/settings.json"))
-window_size = setting_file.get("window_size")
-
 # Pentru a sterge virtual adapter comanda:
 # sudo ip link delete <adapter_name>
 class Main(customtkinter.CTk):
@@ -45,8 +41,9 @@ class Main(customtkinter.CTk):
             self.status_label = output[status_pos].split("|")[1]
 
     def get_connection_btn_state(self):
+        settings_file=json.load(open("libs/settings.json", encoding="utf-8"))
         state=""
-        if setting_file["connection_name"] == "":
+        if settings_file["connection_name"] == "":
             state = "enabled"
         else :
             state = "disabled"
@@ -93,6 +90,10 @@ class Main(customtkinter.CTk):
 #   UI
     def __init__(self):
         super().__init__()
+
+        setting_file : dict = json.load(open("libs/settings.json"))
+        window_size = setting_file.get("window_size")
+
 
         self.title("VPN")
         self.geometry(window_size)
@@ -142,3 +143,4 @@ class Main(customtkinter.CTk):
 
         self.disconnect_btn = customtkinter.CTkButton(self.bottom_frame, text="Disconnect", state="disabled", command=self.disconnect, width=160)
         self.disconnect_btn.grid(row=3, column=1, padx=20, pady=20, sticky="ew")
+        del setting_file

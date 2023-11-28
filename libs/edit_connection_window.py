@@ -3,10 +3,6 @@ import subprocess
 import customtkinter
 from libs.error_handle import has_error
 
-
-setting_file : dict = json.load(open("libs/settings.json"))
-window_size = setting_file.get("window_size")
-
 class EditConnection(customtkinter.CTkToplevel):
     def save(self):
         setting_file :dict=json.load(open("libs/settings.json"))
@@ -93,7 +89,10 @@ class EditConnection(customtkinter.CTkToplevel):
 
     def __init__(self):
         super().__init__()
-        
+ 
+        setting_file : dict = json.load(open("libs/settings.json"))
+        window_size = setting_file.get("window_size")
+       
         self.title("Settings")
         self.geometry(window_size)
         self.resizable(False,False)
@@ -121,3 +120,4 @@ class EditConnection(customtkinter.CTkToplevel):
         self.save_btn= customtkinter.CTkButton(self, text="Connect", state="disabled",command=self.save)
         self.save_btn.grid(row=5, column=0, padx=20, pady=20, sticky="ew")
 
+        del setting_file
