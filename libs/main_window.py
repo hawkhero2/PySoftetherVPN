@@ -1,5 +1,6 @@
 import json
 import subprocess
+from tkinter import StringVar
 import customtkinter
 from libs.edit_connection_window import EditConnection
 from libs.connection import *
@@ -18,7 +19,7 @@ class Main(customtkinter.CTk):
     
     def get_edit_btn_state(self)->str:
         state=""
-        settings_file=json.load(open("libs/settings.json"))
+        settings_file=json.load(open("settings.json", encoding="utf-8"))
         if settings_file["connection_name"] == "":
             state = "disabled"
         else:
@@ -41,7 +42,7 @@ class Main(customtkinter.CTk):
             self.status_label = output[status_pos].split("|")[1]
 
     def get_connection_btn_state(self):
-        settings_file=json.load(open("libs/settings.json", encoding="utf-8"))
+        settings_file=json.load(open("settings.json", encoding="utf-8"))
         state=""
         if settings_file["connection_name"] == "":
             state = "enabled"
@@ -52,7 +53,7 @@ class Main(customtkinter.CTk):
     # TODO https://www.youtube.com/watch?v=i2zN1IFKNYU&pp=ygUgc2V0dXAgc29mdGV0aGVyIHZwbiBjbGllbnQgbGludXg%3D
     def set_startup_conn(self):
         # not tested yet
-        settings_file=json.load(open("libs/settings.json"))
+        settings_file=json.load(open("settings.json"))
         subprocess.run(f"vpncmd /client accountstartupset {settings_file}", shell=True, capture_output=True)
 
     def edit_connection(self):
@@ -70,15 +71,16 @@ class Main(customtkinter.CTk):
         subprocess.run(f"vpncmd /client /cmd accountdisconnect {connection_name}", shell=True)
 
     def connect(self):
-        setting_file :dict = json.load(open("libs/settings.json"))
+        setting_file :dict = json.load(open("settings.json"))
         output = subprocess.run(f"vpncmd /client localhost /cmd accountconnect {setting_file['connection_name']}", shell=True, capture_output=True)
-
-        # TODO Refactor this
         output = output.stdout.decode().splitlines()
 
         if(has_error(output)==False):
             msg_window = MsgBox("Connection successfull") 
-            self.disconnect_btn._state = "enabled"
+            self.connect_btn.configure(state="disabled")
+            self.disconnect_btn.configure(state="enabled")
+            # self.disconnect_btn_state = "enabled"
+            # self.disconnect_btn._state = "enabled"
         else:
             msg_window = MsgBox("Connection failed. Check logs.")
             with open("logs.txt", "a") as logsfile:
@@ -91,7 +93,7 @@ class Main(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        setting_file : dict = json.load(open("libs/settings.json"))
+        setting_file : dict = json.load(open("settings.json"))
         window_size = setting_file.get("window_size")
 
         self.title("VPN")

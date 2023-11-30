@@ -6,9 +6,9 @@ import customtkinter
 from libs.error_handle import has_error, get_error
 from libs.msg_box import MsgBox
 class Connection(customtkinter.CTkToplevel):
-# TODO fix this. It's not writing to the file settings.json
+
     def create_connection(self):
-        settings_file:dict = json.load(open("libs/settings.json", encoding="utf-8"))
+        settings_file:dict = json.load(open("setting.json", encoding="utf-8"))
         vpn_name :str  = settings_file["vpn_name"]
 
         inputs = [
