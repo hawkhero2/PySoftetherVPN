@@ -80,7 +80,6 @@ class Connection(customtkinter.CTkToplevel):
         settings_file:dict = json.load(open("libs/settings.json", encoding="utf-8"))
         window_size = settings_file.get("window_size")
 
-
         self.title("Create Connection")
         self.geometry(window_size)
         self.resizable(False,False)

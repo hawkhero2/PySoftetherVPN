@@ -12,13 +12,8 @@ def has_error(input :list) ->bool:
     result= False
     
     for line in input:
-        index=0
         if(line.__contains__("Error code")):
             result = True
-            break
-        else:
-            index=index+1
-
     return result
 
 def get_error(input:list) ->str:
@@ -31,9 +26,8 @@ def get_error(input:list) ->str:
         str: Error message
     """
     result = ""
-
+    index=0
     for line in input:
-        index=0
         if(line.__contains__("Error code")):
             result=input.index(line)+1
             break
