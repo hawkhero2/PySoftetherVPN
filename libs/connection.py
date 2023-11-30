@@ -62,7 +62,7 @@ class Connection(customtkinter.CTkToplevel):
                     
                     json_dump = json.dumps(settings_file, indent=5)
 
-                    with open("libs/settings.json", "a") as outfile:
+                    with open("settings.json", "a") as outfile:
                         outfile.write(json_dump)
                 else:
                     msg_window = MsgBox(get_error(out))

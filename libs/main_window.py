@@ -65,7 +65,7 @@ class Main(customtkinter.CTk):
  
 
     def disconnect(self):
-        settings_file = json.load(open("libs/settings.json"))
+        settings_file = json.load(open("settings.json"))
         connection_name = settings_file["connection_name"]
         subprocess.run(f"vpncmd /client /cmd accountdisconnect {connection_name}", shell=True)
 
@@ -93,7 +93,6 @@ class Main(customtkinter.CTk):
 
         setting_file : dict = json.load(open("libs/settings.json"))
         window_size = setting_file.get("window_size")
-
 
         self.title("VPN")
         self.geometry(window_size)
