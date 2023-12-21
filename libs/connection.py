@@ -77,7 +77,7 @@ class Connection(customtkinter.CTkToplevel):
     def __init__(self):
         super().__init__()
 
-        settings_file:dict = json.load(open("libs/settings.json", encoding="utf-8"))
+        settings_file:dict = json.load(open("settings.json", encoding="utf-8"))
         window_size = settings_file.get("window_size")
 
         self.title("Create Connection")

@@ -90,7 +90,7 @@ class EditConnection(customtkinter.CTkToplevel):
     def __init__(self):
         super().__init__()
  
-        setting_file : dict = json.load(open("libs/settings.json"))
+        setting_file : dict = json.load(open("settings.json"))
         window_size = setting_file.get("window_size")
        
         self.title("Settings")
